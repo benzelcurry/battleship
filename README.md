@@ -1,1 +1,1 @@
-# battleship
+Battleship project for The Odin Project's JavaScript course.
