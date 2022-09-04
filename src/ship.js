@@ -2,6 +2,7 @@
 
 const Ship = (length) => {
     let index = [];
+    let size = length;
 
     for (let i = 0; i < length; i++) {
         index.push('O');
@@ -15,7 +16,7 @@ const Ship = (length) => {
         return (!index.includes('O'));
     }
 
-    return {index, hit, isSunk};
+    return {index, size, hit, isSunk};
 }
 
 module.exports = Ship;
