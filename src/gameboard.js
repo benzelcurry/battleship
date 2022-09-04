@@ -1,4 +1,9 @@
 // Creates and manages the gameboard
+// Key: {
+//     H = (Ship) Here
+//     M = Miss 
+//     X = Hit 
+// }
 
 const Gameboard = () => {
     let board = [];
@@ -19,11 +24,24 @@ const Gameboard = () => {
         } else {
             for (let i = 0; i < length; i++) {
                 board[index + i] = 'H';
-            }
-        }
-    }
+            };
+        };
+    };
 
-    return {board, placeShip}
+    // Will need to rewrite this to use ships from ship.js
+    const receiveAttack = (index) => {
+        if (board[index] === ' ') {
+            board[index] = 'M'
+        } else {
+            board[index] = 'X'
+        };
+    };
+
+    const gameover = () => {
+        return (!board.includes('H'));
+    };
+
+    return {board, placeShip, receiveAttack, gameover}
 }
 
 module.exports = Gameboard;
