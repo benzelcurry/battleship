@@ -357,7 +357,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n    height: 100vh;\n    width: 100vw;\n    margin: 0px;\n    font-size: 18px;\n}\n\n.gameboard {\n    height: 400px;\n    width: 400px;\n    display: grid;\n    margin: 10px;\n    gap: none;\n    grid-template-columns: repeat(10, 1fr);\n    grid-template-rows: repeat(10, 1fr);\n    align-items: center;\n    justify-content: center;\n    border: solid 2px black;\n    border-bottom: solid 4px black;\n    border-top: solid 4px black;\n}\n\n.square {\n    height: 100%;\n    width: auto;\n    border: solid 2px black;\n}\n\n.square:hover {\n    backdrop-filter: brightness(0.7);\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n    height: 100vh;\n    width: 100vw;\n    margin: 0px;\n    font-size: 18px;\n}\n\n.gameboard {\n    height: 400px;\n    width: 400px;\n    display: grid;\n    margin: 10px;\n    gap: none;\n    grid-template-columns: repeat(10, 1fr);\n    grid-template-rows: repeat(10, 1fr);\n    align-items: center;\n    justify-content: center;\n    border: solid 2px black;\n    border-bottom: solid 4px black;\n    border-top: solid 4px black;\n}\n\n.square {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n    width: auto;\n    border: solid 2px black;\n}\n\n.square:hover {\n    backdrop-filter: brightness(0.7);\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -500,11 +500,17 @@ const Gameboard = () => {
         board.push(' ');
     };
 
-    // May need to add more ships
+    // Declares ships and their arrays
+    const xtraSmallShip = Ship(2);
     const smallShip = Ship(3);
+    const medShip = Ship(4);
+    const bigShip = Ship(5);
+    const hugeShip = Ship(6);
+    let xtraSmallArr = ['O', 'O'];
     let smallArr = ['O', 'O', 'O'];
     let medArr = ['O', 'O', 'O', 'O'];
-    let bigArr = ['O', 'O', 'O', 'O', 'O']; 
+    let bigArr = ['O', 'O', 'O', 'O', 'O'];
+    let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O']; 
 
     const placeShip = (index, ship) => {
         // Checks to see if ship will fit horizontally from left to right
@@ -514,21 +520,19 @@ const Gameboard = () => {
         let secondNumIndex = nextLine[0];
         let letter;
 
-        if (firstNumIndex !== secondNumIndex) {
-            return 'Error';
-        // Assigns a letter to map the grid square to the ship object on it
+        if (index + ship.size < 10) {
+            letter = placementHelper(ship.size);
         } else {
-            if (ship.size === 3) {
-                letter = 's';
-            } else if (ship.size === 4) {
-                letter = 'm';
-            } else if (ship.size === 5) {
-                letter = 'l';
+            if (firstNumIndex !== secondNumIndex) {
+                return 'Error';
+            // Assigns a letter to map the grid square to the ship object on it
+            } else {
+                letter = placementHelper(ship.size);
             }
+        };
 
-            for (let i = 0; i < ship.size; i++) {
-                board[index + i] = ship.index[i] + letter;
-            };
+        for (let i = 0; i < ship.size; i++) {
+            board[index + i] = ship.index[i] + letter;
         };
     };
 
@@ -536,11 +540,19 @@ const Gameboard = () => {
     const receiveAttack = (index) => {
         if (board[index] === ' ') {
             board[index] = 'M'
+        // NEED TO GET isSunk() RUNNING
         } else {
-            if (board[index].split('').includes('s')) {
-                placeDmg(smallArr);
-                smallShip.index = smallArr;
-            }
+            if (board[index].split('').includes('x')) {
+                attackHelper(xtraSmallArr, xtraSmallShip);
+            } else if (board[index].split('').includes('s')) {
+                attackHelper(smallArr, smallShip);
+            } else if (board[index].split('').includes('m')) {
+                attackHelper(medArr, medShip);
+            } else if (board[index].split('').includes('l')) {
+                attackHelper(bigArr, bigShip);
+            } else if (board[index].split('').includes('h')) {
+                attackHelper(hugeArr, hugeShip);
+            };
 
             board[index] = 'X'
         };
@@ -566,7 +578,35 @@ const Gameboard = () => {
         }
     }
 
-    return {board, smallShip, smallArr, placeShip, receiveAttack, gameover, placeDmg}
+    // Helper function for placeAttack()
+    const placementHelper = (shipLength) => {
+        let shipLetter;
+
+        if (shipLength === 2) {
+            shipLetter = 'x';
+        } else if (shipLength === 3) {
+            shipLetter = 's';
+        } else if (shipLength === 4) {
+            shipLetter = 'm';
+        } else if (shipLength === 5) {
+            shipLetter = 'l';
+        } else if (shipLength === 6) {
+            shipLetter = 'h';
+        }
+
+        return shipLetter;
+    }
+
+    // Helper function for receiveAttack()
+    const attackHelper = (array, shipSize) => {
+        placeDmg(array);
+        shipSize.index = array;
+        shipSize.isSunk();
+    }
+
+    return {board, xtraSmallShip, smallShip, medShip, bigShip, hugeShip, xtraSmallArr,
+            smallArr, medArr, bigArr, hugeArr, placeShip, receiveAttack, gameover, 
+            placeDmg}
 }
 
 module.exports = Gameboard;
@@ -605,7 +645,11 @@ module.exports = Ship;
 // Draws gameboards and provides user interface interaction
 
 const drawBoard = (gameboard, playerBoard) => {
-    gameboard.placeShip(13, gameboard.smallShip);
+    gameboard.placeShip(7, gameboard.xtraSmallShip);
+    gameboard.placeShip(23, gameboard.smallShip);
+    gameboard.placeShip(41, gameboard.medShip);
+    gameboard.placeShip(53, gameboard.bigShip);
+    gameboard.placeShip(90, gameboard.hugeShip);
 
     for (let i = 0; i < gameboard.board.length; i++) {
         const square = document.createElement('div');
@@ -615,10 +659,14 @@ const drawBoard = (gameboard, playerBoard) => {
 
         // Executes attack on grid square clicked
         square.addEventListener('click', () => {
-            console.log(square.id);
+            console.log(gameboard.board[square.id]);
             gameboard.receiveAttack(square.id);
             if (gameboard.board[square.id] === 'X') {
-                square.style.backgroundColor = 'red';
+                square.textContent = 'O';
+                square.style.color = 'green';
+            } else {
+                square.textContent = 'X';
+                square.style.color = 'red';
             };
         })
     }
