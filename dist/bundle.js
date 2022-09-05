@@ -1,27 +1,10 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ([
-/* 0 */
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* module decorator */ module = __webpack_require__.hmd(module);
-
-
-const test = document.querySelector('.test');
-test.textContent = 'Hello.'
-
-function sum(a, b) {
-    return a + b;
-}
-
-module.exports = sum;
-
-/***/ }),
+/* 0 */,
 /* 1 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -72,6 +55,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 /* 2 */
 /***/ ((module) => {
 
+"use strict";
 
 
 var stylesInDOM = [];
@@ -181,6 +165,7 @@ module.exports = function (list, options) {
 /* 3 */
 /***/ ((module) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -256,6 +241,7 @@ module.exports = domAPI;
 /* 4 */
 /***/ ((module) => {
 
+"use strict";
 
 
 var memo = {};
@@ -300,6 +286,7 @@ module.exports = insertBySelector;
 /* 5 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -317,6 +304,7 @@ module.exports = setAttributesWithoutAttributes;
 /* 6 */
 /***/ ((module) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -333,6 +321,7 @@ module.exports = insertStyleElement;
 /* 7 */
 /***/ ((module) => {
 
+"use strict";
 
 
 /* istanbul ignore next  */
@@ -354,6 +343,7 @@ module.exports = styleTagTransform;
 /* 8 */
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -367,7 +357,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".test {\n    color: red;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n    height: 100vh;\n    width: 100vw;\n    margin: 0px;\n    font-size: 18px;\n}\n\n.gameboard {\n    height: 400px;\n    width: 400px;\n    display: grid;\n    margin: 10px;\n    gap: none;\n    grid-template-columns: repeat(10, 1fr);\n    grid-template-rows: repeat(10, 1fr);\n    align-items: center;\n    justify-content: center;\n    border: solid 2px black;\n    border-bottom: solid 4px black;\n    border-top: solid 4px black;\n}\n\n.square {\n    height: 100%;\n    width: auto;\n    border: solid 2px black;\n}\n\n.square:hover {\n    backdrop-filter: brightness(0.7);\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -376,6 +366,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".test {\n    color: red;\n}", ""]);
 /* 9 */
 /***/ ((module) => {
 
+"use strict";
 
 
 module.exports = function (i) {
@@ -386,6 +377,7 @@ module.exports = function (i) {
 /* 10 */
 /***/ ((module) => {
 
+"use strict";
 
 
 /*
@@ -489,6 +481,123 @@ module.exports = function (cssWithMappingToString) {
   return list;
 };
 
+/***/ }),
+/* 11 */
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Creates and manages the gameboard
+// Key: {
+//     O = Ship (Not hit)
+//     M = Miss 
+//     X = Hit 
+// }
+
+const Ship = __webpack_require__(12);
+
+const Gameboard = () => {
+    let board = [];
+    for (let i = 0; i < 100; i++) {
+        board.push(' ');
+    };
+
+    // May need to add more ships
+    const smallShip = Ship(3);
+    let smallArr = ['O', 'O', 'O'];
+    let medArr = ['O', 'O', 'O', 'O'];
+    let bigArr = ['O', 'O', 'O', 'O', 'O']; 
+
+    const placeShip = (index, ship) => {
+        // Checks to see if ship will fit horizontally from left to right
+        let stringIndex = String(index).split('')
+        let firstNumIndex = stringIndex[0];
+        let nextLine = String(index + ship.size).split('');
+        let secondNumIndex = nextLine[0];
+        let letter;
+
+        if (firstNumIndex !== secondNumIndex) {
+            return 'Error';
+        // Assigns a letter to map the grid square to the ship object on it
+        } else {
+            if (ship.size === 3) {
+                letter = 's';
+            } else if (ship.size === 4) {
+                letter = 'm';
+            } else if (ship.size === 5) {
+                letter = 'l';
+            }
+
+            for (let i = 0; i < ship.size; i++) {
+                board[index + i] = ship.index[i] + letter;
+            };
+        };
+    };
+
+    // Will need to rewrite this to test for all ship sizes/arrays
+    const receiveAttack = (index) => {
+        if (board[index] === ' ') {
+            board[index] = 'M'
+        } else {
+            if (board[index].split('').includes('s')) {
+                placeDmg(smallArr);
+                smallShip.index = smallArr;
+            }
+
+            board[index] = 'X'
+        };
+    };
+
+    // Will need to rewrite to contain all possible grid values
+    const gameover = () => {
+        return (!board.includes('Os'));
+    };
+
+    // Helper function for determining small/med/bigArr hits
+    const placeDmg = (arr) => {
+        let count = 0;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] === 'O') {
+                count++;
+            };
+        };
+        
+        if (arr.length - count !== arr.length) {
+            arr.unshift('X');
+            arr.pop();
+        }
+    }
+
+    return {board, smallShip, smallArr, placeShip, receiveAttack, gameover, placeDmg}
+}
+
+module.exports = Gameboard;
+
+/***/ }),
+/* 12 */
+/***/ ((module) => {
+
+// Creates a new ship with specified length
+
+const Ship = (length) => {
+    let index = [];
+    let size = length;
+
+    for (let i = 0; i < length; i++) {
+        index.push('O');
+    }
+
+    const hit = (num) => {
+        index[num] = 'X';
+    }
+
+    const isSunk = () => {
+        return (!index.includes('O'));
+    }
+
+    return {index, size, hit, isSunk};
+}
+
+module.exports = Ship;
+
 /***/ })
 /******/ 	]);
 /************************************************************************/
@@ -505,15 +614,12 @@ module.exports = function (cssWithMappingToString) {
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
 /******/ 			id: moduleId,
-/******/ 			loaded: false,
+/******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -544,21 +650,6 @@ module.exports = function (cssWithMappingToString) {
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/harmony module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.hmd = (module) => {
-/******/ 			module = Object.create(module);
-/******/ 			if (!module.children) module.children = [];
-/******/ 			Object.defineProperty(module, 'exports', {
-/******/ 				enumerable: true,
-/******/ 				set: () => {
-/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
-/******/ 				}
-/******/ 			});
-/******/ 			return module;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -581,11 +672,36 @@ module.exports = function (cssWithMappingToString) {
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(0);
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _gameboard_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
+/* harmony import */ var _gameboard_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_gameboard_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+const gameboard1 = _gameboard_js__WEBPACK_IMPORTED_MODULE_1___default()();
+const gameboard2 = _gameboard_js__WEBPACK_IMPORTED_MODULE_1___default()();
+
+const board1 = document.querySelector('.first');
+
+const board2 = document.querySelector('.second');
+
+for (let i = 0; i < gameboard1.board.length; i++) {
+    const square = document.createElement('div');
+    square.classList.add('square');
+    board1.appendChild(square);
+}
+
+for (let i = 0; i < gameboard2.board.length; i++) {
+    const square = document.createElement('div');
+    square.classList.add('square');
+    board2.appendChild(square);
+}
+})();
+
 /******/ })()
 ;
