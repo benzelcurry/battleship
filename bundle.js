@@ -598,6 +598,34 @@ const Ship = (length) => {
 
 module.exports = Ship;
 
+/***/ }),
+/* 13 */
+/***/ ((module) => {
+
+// Draws gameboards and provides user interface interaction
+
+const drawBoard = (gameboard, playerBoard) => {
+    gameboard.placeShip(13, gameboard.smallShip);
+
+    for (let i = 0; i < gameboard.board.length; i++) {
+        const square = document.createElement('div');
+        square.id = i; 
+        square.classList.add('square');
+        playerBoard.appendChild(square);
+
+        // Executes attack on grid square clicked
+        square.addEventListener('click', () => {
+            console.log(square.id);
+            gameboard.receiveAttack(square.id);
+            if (gameboard.board[square.id] === 'X') {
+                square.style.backgroundColor = 'red';
+            };
+        })
+    }
+}
+
+module.exports = drawBoard;
+
 /***/ })
 /******/ 	]);
 /************************************************************************/
@@ -680,27 +708,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var _gameboard_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
 /* harmony import */ var _gameboard_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_gameboard_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
+/* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_interface__WEBPACK_IMPORTED_MODULE_2__);
+// Main module where everything comes together
+
+
 
 
 
 const gameboard1 = _gameboard_js__WEBPACK_IMPORTED_MODULE_1___default()();
 const gameboard2 = _gameboard_js__WEBPACK_IMPORTED_MODULE_1___default()();
-
 const board1 = document.querySelector('.first');
-
 const board2 = document.querySelector('.second');
 
-for (let i = 0; i < gameboard1.board.length; i++) {
-    const square = document.createElement('div');
-    square.classList.add('square');
-    board1.appendChild(square);
-}
-
-for (let i = 0; i < gameboard2.board.length; i++) {
-    const square = document.createElement('div');
-    square.classList.add('square');
-    board2.appendChild(square);
-}
+_interface__WEBPACK_IMPORTED_MODULE_2___default()(gameboard1, board1);
+_interface__WEBPACK_IMPORTED_MODULE_2___default()(gameboard2, board2);
 })();
 
 /******/ })()
