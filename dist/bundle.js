@@ -659,19 +659,27 @@ const drawBoard = (gameboard, playerBoard) => {
         const square = document.createElement('div');
         square.id = i; 
         square.classList.add('square');
+        let beenHit = false;
         playerBoard.appendChild(square);
 
         // Executes attack on grid square clicked
         square.addEventListener('click', () => {
-            console.log(gameboard.board[square.id]);
-            gameboard.receiveAttack(square.id);
-            if (gameboard.board[square.id] === 'X') {
-                square.textContent = 'O';
-                square.style.color = 'green';
+            if (beenHit === false) {
+                beenHit = true;
+                console.log(gameboard.board[square.id]);
+                console.log(`square.textContent === ${square.textContent}`)
+                gameboard.receiveAttack(square.id);
+                if (gameboard.board[square.id] === 'X') {
+                    square.textContent = 'O';
+                    square.style.color = 'green';
+                } else {
+                    square.textContent = 'X';
+                    square.style.color = 'red';
+                };
             } else {
-                square.textContent = 'X';
-                square.style.color = 'red';
-            };
+                return;
+            }
+            
         })
     }
 }
