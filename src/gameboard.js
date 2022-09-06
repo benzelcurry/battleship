@@ -33,12 +33,12 @@ const Gameboard = () => {
         let secondNumIndex = nextLine[0];
         let letter;
 
+         // Assigns a letter to map the grid square to the ship object on it
         if (index + ship.size < 10) {
             letter = placementHelper(ship.size);
         } else {
             if (firstNumIndex !== secondNumIndex) {
                 return 'Error';
-            // Assigns a letter to map the grid square to the ship object on it
             } else {
                 letter = placementHelper(ship.size);
             }
@@ -71,9 +71,8 @@ const Gameboard = () => {
         };
     };
 
-    // Will need to rewrite to contain all possible grid values
+    // Returns true if no ships are left on board; otherwise, false
     const gameover = () => {
-        // return (!board.includes('Os'));
         return (!board.includes('Ox') &&
                 !board.includes('Os') &&
                 !board.includes('Om') &&
