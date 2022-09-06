@@ -41,10 +41,16 @@ test('gameover() returns true if no ships on board', () => {
 test('gameover() returns true if all ships destroyed', () => {
     const game = Gameboard();
     const smallShip = Ship(3);
+    const medShip = Ship(4);
     game.placeShip(13, smallShip);
+    game.placeShip(31, medShip);
     game.receiveAttack(13);
     game.receiveAttack(14);
     game.receiveAttack(15);
+    game.receiveAttack(31);
+    game.receiveAttack(32);
+    game.receiveAttack(33);
+    game.receiveAttack(34);
 
     expect(game.gameover()).toBe(true);
 });

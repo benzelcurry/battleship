@@ -73,7 +73,12 @@ const Gameboard = () => {
 
     // Will need to rewrite to contain all possible grid values
     const gameover = () => {
-        return (!board.includes('Os'));
+        // return (!board.includes('Os'));
+        return (!board.includes('Ox') &&
+                !board.includes('Os') &&
+                !board.includes('Om') &&
+                !board.includes('Ol') &&
+                !board.includes('Oh'));
     };
 
     // Helper function for determining small/med/bigArr hits
