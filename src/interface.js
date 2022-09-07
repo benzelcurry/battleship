@@ -40,12 +40,23 @@ const drawBoard = (gameboard, playerBoard, playerStatus) => {
         let beenHit = false;
         playerBoard.appendChild(square);
 
+        // MAKE MOUSEOVER EVENTS DEPEND ON IF SHIPS HAVE BEEN PLACED OR NOT
+        square.addEventListener('mouseover', () => {
+            square.style.backgroundColor = 'green';
+            square.style.backgroundColor = 'hidden';
+        });
+
+        square.addEventListener('mouseleave', () => {
+            square.style.backgroundColor = 'white';
+        });
+
         // Places ships, then executes attack on grid square clicked
         square.addEventListener('click', () => {
-            // 1.
-            // CURRENTLY DOESN'T PLACE SHIPS IF TOO CLOSE TO EDGE, BUT STIL PROGRESSES WITH LOOP
+            // 1. Do following tasks in order
             // IMPLEMENT GRID SQUARE HIGHLIGHTS TO SHOW WHERE SHIPS WILL BE PLACED
-            // IMPLEMENT SOME WAY OF SHOWING USER WHERE THEIR SHIPS ARE, BUT NOT ENEMY SHIPS
+            // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
+            // CURRENTLY DOESN'T PLACE SHIPS IF TOO CLOSE TO EDGE, BUT STIL PROGRESSES WITH LOOP
+            // IMPLEMENT SOME WAY OF SHOWING USER WHERE THEIR SHIPS ARE, BUT NOT ENEMY SHIPS (do after turns implemented)
             if (!xtraPlaced) {
                 gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip);
                 xtraPlaced = true;
