@@ -531,6 +531,7 @@ const Gameboard = () => {
             }
         };
 
+        // Might need to duplicate and move into successful outcomes of above function
         for (let i = 0; i < ship.size; i++) {
             board[index + i] = ship.index[i] + letter;
         };
@@ -650,11 +651,16 @@ module.exports = Ship;
 
 const drawBoard = (gameboard, playerBoard, playerStatus) => {
     // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
-    gameboard.placeShip(7, gameboard.xtraSmallShip);
     gameboard.placeShip(23, gameboard.smallShip);
     gameboard.placeShip(41, gameboard.medShip);
     gameboard.placeShip(53, gameboard.bigShip);
     gameboard.placeShip(90, gameboard.hugeShip);
+
+    let xtraPlaced = false;
+    let smallPlaced = false;
+    let medPlaced = false;
+    let bigPlaced = false;
+    let hugePlaced = false;
 
     const xtraSmallSunk = document.createElement('div');
     xtraSmallSunk.classList.add('sunk');
@@ -683,44 +689,67 @@ const drawBoard = (gameboard, playerBoard, playerStatus) => {
         let beenHit = false;
         playerBoard.appendChild(square);
 
-        // Executes attack on grid square clicked
+        // Places ships, then executes attack on grid square clicked
         square.addEventListener('click', () => {
-            if (beenHit === false) {
-                beenHit = true;
-                console.log(gameboard.smallShip.index);
-                
-                gameboard.receiveAttack(square.id);
-                if (gameboard.board[square.id] === 'X') {
-                    square.textContent = 'O';
-                    square.style.color = 'green';
-                } else {
-                    square.textContent = 'X';
-                    square.style.color = 'red';
-                };
+            // 1.
+            // CURRENTLY DOESN'T PLACE SHIPS IF TOO CLOSE TO EDGE, BUT STIL PROGRESSES WITH LOOP
+            // IMPLEMENT GRID SQUARE HIGHLIGHTS TO SHOW WHERE SHIPS WILL BE PLACED
+            // IMPLEMENT SOME WAY OF SHOWING USER WHERE THEIR SHIPS ARE, BUT NOT ENEMY SHIPS
+            if (!xtraPlaced) {
+                gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip);
+                xtraPlaced = true;
+            } else if (!smallPlaced) {
+                gameboard.placeShip(Number(square.id), gameboard.smallShip);
+                smallPlaced = true;
+            } else if (!medPlaced) {
+                gameboard.placeShip(Number(square.id), gameboard.medShip);
+                medPlaced = true;
+            } else if (!bigPlaced) {
+                gameboard.placeShip(Number(square.id), gameboard.bigShip);
+                bigPlaced = true;
+            } else if (!hugePlaced) {
+                gameboard.placeShip(Number(square.id), gameboard.hugeShip);
+                hugePlaced = true;
             } else {
-                return;
-            }
-            
-            // MAKE THIS WORK FOR ALL SHIPS AND BOTH BOARDS INDEPENDENTLY
-            // Appends which ships have been sunken to the scoreboard
-            if (!gameboard.xtraSmallShip.index.includes('O')) {
-                playerStatus.appendChild(xtraSmallSunk);
-            };
-            
-            if (!gameboard.smallShip.index.includes('O')) {
-                playerStatus.appendChild(smallSunk);
-            };
+            // 2. Once all ships been placed, start checking for hits
 
-            if (!gameboard.medShip.index.includes('O')) {
-                playerStatus.appendChild(medSunk);
-            };
+                if (beenHit === false) {
+                    beenHit = true;
+                    console.log(gameboard.xtraSmallShip.index);
+                    
+                    gameboard.receiveAttack(square.id);
+                    if (gameboard.board[square.id] === 'X') {
+                        square.textContent = 'O';
+                        square.style.color = 'green';
+                    } else {
+                        square.textContent = 'X';
+                        square.style.color = 'red';
+                    };
+                } else {
+                    return;
+                }
+                
+                // MAKE THIS WORK FOR ALL SHIPS AND BOTH BOARDS INDEPENDENTLY
+                // Appends which ships have been sunken to the scoreboard
+                if (!gameboard.xtraSmallShip.index.includes('O')) {
+                    playerStatus.appendChild(xtraSmallSunk);
+                };
+                
+                if (!gameboard.smallShip.index.includes('O')) {
+                    playerStatus.appendChild(smallSunk);
+                };
 
-            if (!gameboard.bigShip.index.includes('O')) {
-                playerStatus.appendChild(bigSunk);
-            };
+                if (!gameboard.medShip.index.includes('O')) {
+                    playerStatus.appendChild(medSunk);
+                };
 
-            if (!gameboard.hugeShip.index.includes('O')) {
-                playerStatus.appendChild(hugeSunk);
+                if (!gameboard.bigShip.index.includes('O')) {
+                    playerStatus.appendChild(bigSunk);
+                };
+
+                if (!gameboard.hugeShip.index.includes('O')) {
+                    playerStatus.appendChild(hugeSunk);
+                };
             };
         });
     };
