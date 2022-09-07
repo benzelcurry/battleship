@@ -7,6 +7,12 @@ const drawBoard = (gameboard, playerBoard) => {
     gameboard.placeShip(53, gameboard.bigShip);
     gameboard.placeShip(90, gameboard.hugeShip);
 
+    const player1 = document.querySelector('.player1');
+
+    const smallSunk = document.createElement('div');
+    smallSunk.classList.add('sunk');
+    smallSunk.textContent = 'Small ship sunk';
+
     for (let i = 0; i < gameboard.board.length; i++) {
         const square = document.createElement('div');
         square.id = i; 
@@ -18,8 +24,8 @@ const drawBoard = (gameboard, playerBoard) => {
         square.addEventListener('click', () => {
             if (beenHit === false) {
                 beenHit = true;
-                console.log(gameboard.board[square.id]);
-                console.log(`square.textContent === ${square.textContent}`)
+                console.log(gameboard.smallShip.index);
+                
                 gameboard.receiveAttack(square.id);
                 if (gameboard.board[square.id] === 'X') {
                     square.textContent = 'O';
@@ -32,8 +38,13 @@ const drawBoard = (gameboard, playerBoard) => {
                 return;
             }
             
-        })
-    }
-}
+            // MAKE THIS WORK FOR ALL SHIPS AND BOTH BOARDS INDEPENDENTLY
+            // Appends which ships have been sunken to the scoreboard
+            if (!gameboard.smallShip.index.includes('O')) {
+                player1.appendChild(smallSunk);
+            };
+        });
+    };
+};
 
 module.exports = drawBoard;

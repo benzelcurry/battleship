@@ -13,7 +13,8 @@ const Ship = (length) => {
     }
 
     const isSunk = () => {
-        return (!index.includes('O'));
+        // return (!index.includes('O'));
+        return (index.includes('X'));
     }
 
     return {index, size, hit, isSunk};

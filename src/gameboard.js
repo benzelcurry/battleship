@@ -49,7 +49,6 @@ const Gameboard = () => {
         };
     };
 
-    // Will need to rewrite this to test for all ship sizes/arrays
     const receiveAttack = (index) => {
         if (board[index] === ' ') {
             board[index] = 'M'

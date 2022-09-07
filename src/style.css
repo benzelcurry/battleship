@@ -60,3 +60,16 @@ body {
     justify-content: space-around;
     flex-grow: 1;
 }
+
+.player1,
+.player2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+}
+
+.player1 > *,
+.player2 > * {
+    font-weight: 400;
+}
