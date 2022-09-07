@@ -44,6 +44,7 @@ const Gameboard = () => {
             }
         };
 
+        // Might need to duplicate and move into successful outcomes of above function
         for (let i = 0; i < ship.size; i++) {
             board[index + i] = ship.index[i] + letter;
         };
