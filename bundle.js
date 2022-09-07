@@ -357,7 +357,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n    height: 100vh;\n    width: 100vw;\n    margin: 0px;\n    font-size: 18px;\n    display: grid;\n    /* align-items: center;\n    justify-content: center; */\n    grid-template-columns: repeat(3, 1fr);\n}\n\n.board-container {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n}\n\n.gameboard {\n    height: 400px;\n    width: 400px;\n    display: grid;\n    margin: 10px;\n    gap: none;\n    grid-template-columns: repeat(10, 1fr);\n    grid-template-rows: repeat(10, 1fr);\n    align-items: center;\n    justify-content: center;\n    border: solid 2px black;\n    border-bottom: solid 4px black;\n    border-top: solid 4px black;\n}\n\n.square {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n    width: auto;\n    border: solid 2px black;\n}\n\n.square:hover {\n    backdrop-filter: brightness(0.7);\n}\n\n.status-container {\n    margin: 75px;\n    gap: 50px;\n    border-left: solid 4px black;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.player-status {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: space-around;\n    flex-grow: 1;\n}\n\n.player1,\n.player2 {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    font-weight: bold;\n}\n\n.player1 > *,\n.player2 > * {\n    font-weight: 400;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n    height: 100vh;\n    width: 100vw;\n    margin: 0px;\n    font-size: 18px;\n    display: grid;\n    /* align-items: center;\n    justify-content: center; */\n    grid-template-columns: repeat(3, 1fr);\n}\n\n.board-container {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n}\n\n.gameboard {\n    height: 400px;\n    width: 400px;\n    display: grid;\n    margin: 10px;\n    gap: none;\n    grid-template-columns: repeat(10, 1fr);\n    grid-template-rows: repeat(10, 1fr);\n    align-items: center;\n    justify-content: center;\n    border: solid 2px black;\n    border-bottom: solid 4px black;\n    border-top: solid 4px black;\n}\n\n.square {\n    box-sizing: border-box;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n    width: auto;\n    border: solid 2px black;\n}\n\n/* .square:hover {\n    backdrop-filter: brightness(0.7);\n} */\n\n.status-container {\n    margin: 75px;\n    gap: 50px;\n    border-left: solid 4px black;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.player-status {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: space-around;\n    flex-grow: 1;\n}\n\n.player1,\n.player2 {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    font-weight: bold;\n}\n\n.player1 > *,\n.player2 > * {\n    font-weight: 400;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -689,12 +689,23 @@ const drawBoard = (gameboard, playerBoard, playerStatus) => {
         let beenHit = false;
         playerBoard.appendChild(square);
 
+        // MAKE MOUSEOVER EVENTS DEPEND ON IF SHIPS HAVE BEEN PLACED OR NOT
+        square.addEventListener('mouseover', () => {
+            square.style.backgroundColor = 'green';
+            square.style.backgroundColor = 'hidden';
+        });
+
+        square.addEventListener('mouseleave', () => {
+            square.style.backgroundColor = 'white';
+        });
+
         // Places ships, then executes attack on grid square clicked
         square.addEventListener('click', () => {
-            // 1.
-            // CURRENTLY DOESN'T PLACE SHIPS IF TOO CLOSE TO EDGE, BUT STIL PROGRESSES WITH LOOP
+            // 1. Do following tasks in order
             // IMPLEMENT GRID SQUARE HIGHLIGHTS TO SHOW WHERE SHIPS WILL BE PLACED
-            // IMPLEMENT SOME WAY OF SHOWING USER WHERE THEIR SHIPS ARE, BUT NOT ENEMY SHIPS
+            // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
+            // CURRENTLY DOESN'T PLACE SHIPS IF TOO CLOSE TO EDGE, BUT STIL PROGRESSES WITH LOOP
+            // IMPLEMENT SOME WAY OF SHOWING USER WHERE THEIR SHIPS ARE, BUT NOT ENEMY SHIPS (do after turns implemented)
             if (!xtraPlaced) {
                 gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip);
                 xtraPlaced = true;
