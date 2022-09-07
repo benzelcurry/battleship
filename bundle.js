@@ -357,7 +357,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n    height: 100vh;\n    width: 100vw;\n    margin: 0px;\n    font-size: 18px;\n    display: grid;\n    /* align-items: center;\n    justify-content: center; */\n    grid-template-columns: repeat(3, 1fr);\n}\n\n.board-container {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n}\n\n.gameboard {\n    height: 400px;\n    width: 400px;\n    display: grid;\n    margin: 10px;\n    gap: none;\n    grid-template-columns: repeat(10, 1fr);\n    grid-template-rows: repeat(10, 1fr);\n    align-items: center;\n    justify-content: center;\n    border: solid 2px black;\n    border-bottom: solid 4px black;\n    border-top: solid 4px black;\n}\n\n.square {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n    width: auto;\n    border: solid 2px black;\n}\n\n.square:hover {\n    backdrop-filter: brightness(0.7);\n}\n\n.status-container {\n    margin: 75px;\n    gap: 50px;\n    border-left: solid 4px black;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.player-status {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: space-around;\n    flex-grow: 1;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n    height: 100vh;\n    width: 100vw;\n    margin: 0px;\n    font-size: 18px;\n    display: grid;\n    /* align-items: center;\n    justify-content: center; */\n    grid-template-columns: repeat(3, 1fr);\n}\n\n.board-container {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n}\n\n.gameboard {\n    height: 400px;\n    width: 400px;\n    display: grid;\n    margin: 10px;\n    gap: none;\n    grid-template-columns: repeat(10, 1fr);\n    grid-template-rows: repeat(10, 1fr);\n    align-items: center;\n    justify-content: center;\n    border: solid 2px black;\n    border-bottom: solid 4px black;\n    border-top: solid 4px black;\n}\n\n.square {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n    width: auto;\n    border: solid 2px black;\n}\n\n.square:hover {\n    backdrop-filter: brightness(0.7);\n}\n\n.status-container {\n    margin: 75px;\n    gap: 50px;\n    border-left: solid 4px black;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.player-status {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: space-around;\n    flex-grow: 1;\n}\n\n.player1,\n.player2 {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    font-weight: bold;\n}\n\n.player1 > *,\n.player2 > * {\n    font-weight: 400;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -536,7 +536,6 @@ const Gameboard = () => {
         };
     };
 
-    // Will need to rewrite this to test for all ship sizes/arrays
     const receiveAttack = (index) => {
         if (board[index] === ' ') {
             board[index] = 'M'
@@ -634,7 +633,8 @@ const Ship = (length) => {
     }
 
     const isSunk = () => {
-        return (!index.includes('O'));
+        // return (!index.includes('O'));
+        return (index.includes('X'));
     }
 
     return {index, size, hit, isSunk};
@@ -655,6 +655,12 @@ const drawBoard = (gameboard, playerBoard) => {
     gameboard.placeShip(53, gameboard.bigShip);
     gameboard.placeShip(90, gameboard.hugeShip);
 
+    const player1 = document.querySelector('.player1');
+
+    const smallSunk = document.createElement('div');
+    smallSunk.classList.add('sunk');
+    smallSunk.textContent = 'Small ship sunk';
+
     for (let i = 0; i < gameboard.board.length; i++) {
         const square = document.createElement('div');
         square.id = i; 
@@ -666,8 +672,8 @@ const drawBoard = (gameboard, playerBoard) => {
         square.addEventListener('click', () => {
             if (beenHit === false) {
                 beenHit = true;
-                console.log(gameboard.board[square.id]);
-                console.log(`square.textContent === ${square.textContent}`)
+                console.log(gameboard.smallShip.index);
+                
                 gameboard.receiveAttack(square.id);
                 if (gameboard.board[square.id] === 'X') {
                     square.textContent = 'O';
@@ -680,9 +686,14 @@ const drawBoard = (gameboard, playerBoard) => {
                 return;
             }
             
-        })
-    }
-}
+            // MAKE THIS WORK FOR ALL SHIPS AND BOTH BOARDS INDEPENDENTLY
+            // Appends which ships have been sunken to the scoreboard
+            if (!gameboard.smallShip.index.includes('O')) {
+                player1.appendChild(smallSunk);
+            };
+        });
+    };
+};
 
 module.exports = drawBoard;
 
