@@ -645,11 +645,20 @@ module.exports = Ship;
 
 /***/ }),
 /* 13 */
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ drawBoard)
+/* harmony export */ });
+/* harmony import */ var _placementHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
+/* harmony import */ var _placementHelper__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_placementHelper__WEBPACK_IMPORTED_MODULE_0__);
 // Draws gameboards and provides user interface interaction
 
-const drawBoard = (gameboard, playerBoard, playerStatus) => {
+
+
+function drawBoard(gameboard, playerBoard, playerStatus) {
     // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
     gameboard.placeShip(23, gameboard.smallShip);
     gameboard.placeShip(41, gameboard.medShip);
@@ -689,14 +698,22 @@ const drawBoard = (gameboard, playerBoard, playerStatus) => {
         let beenHit = false;
         playerBoard.appendChild(square);
 
-        // MAKE MOUSEOVER EVENTS DEPEND ON IF SHIPS HAVE BEEN PLACED OR NOT
+        // Fix so that it shows red at the end of every row if can't place
         square.addEventListener('mouseover', () => {
-            square.style.backgroundColor = 'green';
-            square.style.backgroundColor = 'hidden';
+            _placementHelper__WEBPACK_IMPORTED_MODULE_0___default()(xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced, square);
         });
 
         square.addEventListener('mouseleave', () => {
-            square.style.backgroundColor = 'white';
+            if (!hugePlaced) {
+                square.style.backgroundColor = 'white';
+                square.nextElementSibling.style.backgroundColor = 'white';
+                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+            } else {
+                square.style.backgroundColor = 'white';
+            }
         });
 
         // Places ships, then executes attack on grid square clicked
@@ -720,6 +737,12 @@ const drawBoard = (gameboard, playerBoard, playerStatus) => {
                 bigPlaced = true;
             } else if (!hugePlaced) {
                 gameboard.placeShip(Number(square.id), gameboard.hugeShip);
+                square.style.backgroundColor = 'white';
+                square.nextElementSibling.style.backgroundColor = 'white';
+                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
                 hugePlaced = true;
             } else {
             // 2. Once all ships been placed, start checking for hits
@@ -766,7 +789,85 @@ const drawBoard = (gameboard, playerBoard, playerStatus) => {
     };
 };
 
-module.exports = drawBoard;
+// module.exports = drawBoard;
+
+/***/ }),
+/* 14 */
+/***/ ((module) => {
+
+// Helper module for hovering/unhovering grid while placing ships to
+// avoid cluttering interface.js
+// *** INCREDIBLY UGLY, COULD FIX THIS WITH RECURSION ***
+// Could fix so it doesn't log errors in console when hovering an
+// unplaceable spot, but not a priority.
+
+const placementHelper = (xtra, small, med, big, huge, square) => {
+    if (!xtra) {
+        if (Number(square.id) + 2 > 100) {
+            square.style.backgroundColor = 'red';
+            square.nextElementSibling.style.backgroundColor = 'red';
+        } else {
+            square.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.style.backgroundColor = 'lightgreen';
+        }
+    } else if (!small) {
+        if (Number(square.id) + 3 > 100) {
+            square.style.backgroundColor = 'red';
+            square.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+        } else {
+            square.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+        }
+    } else if (!med) {
+        if (Number(square.id) + 4 > 100) {
+            square.style.backgroundColor = 'red';
+            square.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+        } else {
+            square.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+        }
+    } else if (!big) {
+        if (Number(square.id) + 5 > 100) {
+            square.style.backgroundColor = 'red';
+            square.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+        } else {
+            square.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+        }
+    } else if (!huge) {
+        if (Number(square.id) + 6 > 100) {
+            square.style.backgroundColor = 'red';
+            square.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+        } else {
+            square.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+        }
+    } else { 
+        square.style.backgroundColor = 'grey';
+    };
+};
+
+module.exports = placementHelper;
 
 /***/ })
 /******/ 	]);
@@ -851,7 +952,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameboard_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
 /* harmony import */ var _gameboard_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_gameboard_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
-/* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_interface__WEBPACK_IMPORTED_MODULE_2__);
 // Main module where everything comes together
 
 
@@ -865,8 +965,8 @@ const board2 = document.querySelector('.second');
 const player1Status = document.querySelector('.player1');
 const player2Status = document.querySelector('.player2');
 
-_interface__WEBPACK_IMPORTED_MODULE_2___default()(gameboard1, board1, player1Status);
-_interface__WEBPACK_IMPORTED_MODULE_2___default()(gameboard2, board2, player2Status);
+(0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard1, board1, player1Status);
+(0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard2, board2, player2Status);
 })();
 
 /******/ })()
