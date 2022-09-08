@@ -93,7 +93,6 @@ export default function drawBoard(gameboard, playerBoard, playerStatus) {
 
                 if (beenHit === false) {
                     beenHit = true;
-                    console.log(gameboard.xtraSmallShip.index);
                     
                     gameboard.receiveAttack(square.id);
                     if (gameboard.board[square.id] === 'X') {

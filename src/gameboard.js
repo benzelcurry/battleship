@@ -29,12 +29,12 @@ const Gameboard = () => {
         // Checks to see if ship will fit horizontally from left to right
         let stringIndex = String(index).split('')
         let firstNumIndex = stringIndex[0];
-        let nextLine = String(index + ship.size).split('');
+        let nextLine = String(index + ship.size - 1).split('');
         let secondNumIndex = nextLine[0];
         let letter;
 
          // Assigns a letter to map the grid square to the ship object on it
-        if (index + ship.size < 10) {
+        if (index + ship.size <= 10) {
             letter = placementHelper(ship.size);
         } else {
             if (firstNumIndex !== secondNumIndex) {
