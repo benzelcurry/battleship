@@ -512,7 +512,8 @@ const Gameboard = () => {
     let bigArr = ['O', 'O', 'O', 'O', 'O'];
     let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O']; 
 
-    const placeShip = (index, ship) => {
+    // MAKE IT SO CAN'T PLACE SHIPS WHERE ONE'S ALREADY BEEN PLACED; USE ITERATION TO SEARCH FOR GRID VALUES
+    const placeShip = (index, ship, siblings) => {
         // Checks to see if ship will fit horizontally from left to right
         let stringIndex = String(index).split('')
         let firstNumIndex = stringIndex[0];
@@ -532,6 +533,7 @@ const Gameboard = () => {
         };
 
         // Might need to duplicate and move into successful outcomes of above function
+        // WILL NEED TO CHANGE ONCE SHIPS CAN BE PLACED VERTICALLY
         for (let i = 0; i < ship.size; i++) {
             board[index + i] = ship.index[i] + letter;
         };
@@ -718,35 +720,73 @@ function drawBoard(gameboard, playerBoard, playerStatus) {
 
         // Places ships, then executes attack on grid square clicked
         square.addEventListener('click', () => {
+            let siblings;
             // 1. Do following tasks in order
-            // IMPLEMENT GRID SQUARE HIGHLIGHTS TO SHOW WHERE SHIPS WILL BE PLACED
             // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
-            // CURRENTLY DOESN'T PLACE SHIPS IF TOO CLOSE TO EDGE, BUT STIL PROGRESSES WITH LOOP
-            // IMPLEMENT SOME WAY OF SHOWING USER WHERE THEIR SHIPS ARE, BUT NOT ENEMY SHIPS (do after turns implemented)
             if (!xtraPlaced) {
-                gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip);
-                xtraPlaced = true;
+                siblings = 1;
+                if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings) === 'Error') {
+                    alert('You can\'t place a ship here');
+                } else {
+                    square.textContent = 'XS';
+                    square.nextElementSibling.textContent = 'XS';
+                    xtraPlaced = true;
+                }
             } else if (!smallPlaced) {
-                gameboard.placeShip(Number(square.id), gameboard.smallShip);
-                smallPlaced = true;
+                siblings = 2;
+                if (gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings) === 'Error') {
+                    alert('You can\'t place a ship here');
+                } else {
+                    gameboard.placeShip(Number(square.id), gameboard.smallShip);
+                    square.textContent = 'S';
+                    square.nextElementSibling.textContent = 'S';
+                    square.nextElementSibling.nextElementSibling.textContent = 'S';
+                    smallPlaced = true;
+                }
             } else if (!medPlaced) {
-                gameboard.placeShip(Number(square.id), gameboard.medShip);
-                medPlaced = true;
+                if (gameboard.placeShip(Number(square.id), gameboard.medShip) === 'Error') {
+                    alert('You can\'t place a ship here');
+                } else {
+                    gameboard.placeShip(Number(square.id), gameboard.medShip);
+                    square.textContent = 'M';
+                    square.nextElementSibling.textContent = 'M';
+                    square.nextElementSibling.nextElementSibling.textContent = 'M';
+                    square.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'M';
+                    medPlaced = true;
+                }
             } else if (!bigPlaced) {
-                gameboard.placeShip(Number(square.id), gameboard.bigShip);
-                bigPlaced = true;
+                if (gameboard.placeShip(Number(square.id), gameboard.bigShip) === 'Error') {
+                    alert('You can\'t place a ship here');
+                } else {
+                    gameboard.placeShip(Number(square.id), gameboard.bigShip);
+                    square.textContent = 'B';
+                    square.nextElementSibling.textContent = 'B';
+                    square.nextElementSibling.nextElementSibling.textContent = 'B';
+                    square.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'B';
+                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'B';
+                    bigPlaced = true;
+                }
             } else if (!hugePlaced) {
-                gameboard.placeShip(Number(square.id), gameboard.hugeShip);
-                square.style.backgroundColor = 'white';
-                square.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                hugePlaced = true;
+                if (gameboard.placeShip(Number(square.id), gameboard.hugeShip) === 'Error') {
+                    alert('You can\'t place a ship here');
+                } else {
+                    gameboard.placeShip(Number(square.id), gameboard.hugeShip);
+                    square.textContent = 'H';
+                    square.nextElementSibling.textContent = 'H';
+                    square.nextElementSibling.nextElementSibling.textContent = 'H';
+                    square.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'H';
+                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'H';
+                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'H';
+                    square.style.backgroundColor = 'white';
+                    square.nextElementSibling.style.backgroundColor = 'white';
+                    square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                    square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                    hugePlaced = true;
+                }
             } else {
             // 2. Once all ships been placed, start checking for hits
-
                 if (beenHit === false) {
                     beenHit = true;
                     
