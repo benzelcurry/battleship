@@ -712,7 +712,6 @@ function drawBoard(gameboard, playerBoard, playerStatus) {
         let beenHit = false;
         playerBoard.appendChild(square);
 
-        // Fix so that it shows red at the end of every row if can't place
         square.addEventListener('mouseover', () => {
             _placementHelper__WEBPACK_IMPORTED_MODULE_0___default()(xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced, square);
         });
@@ -733,6 +732,14 @@ function drawBoard(gameboard, playerBoard, playerStatus) {
         // Places ships, then executes attack on grid square clicked
         square.addEventListener('click', () => {
             let siblings;
+
+            const markSquares = (sqSize) => {
+                for (let i = Number(square.id); i < (Number(square.id) + siblings); i++) {
+                    let thisSquare = document.getElementById(String(i));
+                    thisSquare.textContent = sqSize;
+                }
+            }
+
             // 1. Do following tasks in order
             // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
             if (!xtraPlaced) {
@@ -741,8 +748,7 @@ function drawBoard(gameboard, playerBoard, playerStatus) {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings);
-                    square.textContent = 'XS';
-                    square.nextElementSibling.textContent = 'XS';
+                    markSquares('XS');
                     xtraPlaced = true;
                 }
             } else if (!smallPlaced) {
@@ -751,9 +757,7 @@ function drawBoard(gameboard, playerBoard, playerStatus) {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings);
-                    square.textContent = 'S';
-                    square.nextElementSibling.textContent = 'S';
-                    square.nextElementSibling.nextElementSibling.textContent = 'S';
+                    markSquares('S');
                     smallPlaced = true;
                 }
             } else if (!medPlaced) {
@@ -762,10 +766,7 @@ function drawBoard(gameboard, playerBoard, playerStatus) {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.medShip, siblings);
-                    square.textContent = 'M';
-                    square.nextElementSibling.textContent = 'M';
-                    square.nextElementSibling.nextElementSibling.textContent = 'M';
-                    square.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'M';
+                    markSquares('M');
                     medPlaced = true;
                 }
             } else if (!bigPlaced) {
@@ -774,11 +775,7 @@ function drawBoard(gameboard, playerBoard, playerStatus) {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.bigShip, siblings);
-                    square.textContent = 'B';
-                    square.nextElementSibling.textContent = 'B';
-                    square.nextElementSibling.nextElementSibling.textContent = 'B';
-                    square.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'B';
-                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'B';
+                    markSquares('B');
                     bigPlaced = true;
                 }
             } else if (!hugePlaced) {
@@ -787,12 +784,7 @@ function drawBoard(gameboard, playerBoard, playerStatus) {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings);
-                    square.textContent = 'H';
-                    square.nextElementSibling.textContent = 'H';
-                    square.nextElementSibling.nextElementSibling.textContent = 'H';
-                    square.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'H';
-                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'H';
-                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent = 'H';
+                    markSquares('H');
                     square.style.backgroundColor = 'white';
                     square.nextElementSibling.style.backgroundColor = 'white';
                     square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
