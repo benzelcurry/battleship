@@ -855,21 +855,25 @@ const placementHelper = (xtra, small, med, big, huge, square) => {
     let nextLine;
     let secondNumIndex;
 
+    const colorSquares = (color) => {
+        for (let i = Number(square.id); i < (Number(square.id) + shipSize); i++) {
+            let thisSquare = document.getElementById(i);
+            thisSquare.style.backgroundColor = color;
+        }
+    }
+
     if (!xtra) {
-        let firstRow = false;
         shipSize = 2;
         nextLine = String(Number(square.id) + shipSize - 1).split('');
         secondNumIndex = (nextLine[0]);
         if (Number(square.id) + shipSize <= 10) {
-            square.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.style.backgroundColor = 'lightgreen';
+            colorSquares('lightgreen');
         } else {
+            console.log('no, here');
             if (Number(square.id) + 2 > 100 || firstNumIndex !== secondNumIndex) {
-                square.style.backgroundColor = 'red';
-                square.nextElementSibling.style.backgroundColor = 'red';
+                colorSquares('red');
             } else {
-                square.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.style.backgroundColor = 'lightgreen';
+                colorSquares('lightgreen');
             }
         }
     } else if (!small) {
@@ -877,18 +881,12 @@ const placementHelper = (xtra, small, med, big, huge, square) => {
         nextLine = String(Number(square.id) + shipSize - 1).split('');
         secondNumIndex = (nextLine[0]);
         if (Number(square.id) + shipSize <= 10) {
-            square.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            colorSquares('lightgreen');
         } else {
             if (Number(square.id) + 3 > 100 || (firstNumIndex !== secondNumIndex)) {
-                square.style.backgroundColor = 'red';
-                square.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+                colorSquares('red');
             } else {
-                square.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+                colorSquares('lightgreen');
             }
         }
     } else if (!med) {
@@ -896,21 +894,12 @@ const placementHelper = (xtra, small, med, big, huge, square) => {
         nextLine = String(Number(square.id) + shipSize - 1).split('');
         secondNumIndex = (nextLine[0]);
         if (Number(square.id) + shipSize <= 10) {
-            square.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            colorSquares('lightgreen');
         } else {
             if (Number(square.id) + 4 > 100 || firstNumIndex !== secondNumIndex) {
-                square.style.backgroundColor = 'red';
-                square.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+                colorSquares('red');
             } else {
-                square.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+                colorSquares('lightgreen');
             }
         }
     } else if (!big) {
@@ -918,24 +907,12 @@ const placementHelper = (xtra, small, med, big, huge, square) => {
         nextLine = String(Number(square.id) + shipSize - 1).split('');
         secondNumIndex = (nextLine[0]);
         if (Number(square.id) + shipSize <= 10) {
-            square.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            colorSquares('lightgreen');
         } else {
             if (Number(square.id) + 5 > 100 || firstNumIndex !== secondNumIndex) {
-                square.style.backgroundColor = 'red';
-                square.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+                colorSquares('red');
             } else {
-                square.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+                colorSquares('lightgreen');
             }
         }
     } else if (!huge) {
@@ -943,27 +920,12 @@ const placementHelper = (xtra, small, med, big, huge, square) => {
         nextLine = String(Number(square.id) + shipSize - 1).split('');
         secondNumIndex = (nextLine[0]);
         if (Number(square.id) + shipSize <= 10) {
-            square.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+            colorSquares('lightgreen');
         } else {
             if (Number(square.id) + 6 > 100 || firstNumIndex !== secondNumIndex) {
-                square.style.backgroundColor = 'red';
-                square.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'red';
+                colorSquares('red');
             } else {
-                square.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'lightgreen';
+                colorSquares('lightgreen');
             }
         }
     } else { 
