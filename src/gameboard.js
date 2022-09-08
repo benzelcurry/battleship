@@ -25,7 +25,8 @@ const Gameboard = () => {
     let bigArr = ['O', 'O', 'O', 'O', 'O'];
     let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O']; 
 
-    const placeShip = (index, ship) => {
+    // MAKE IT SO CAN'T PLACE SHIPS WHERE ONE'S ALREADY BEEN PLACED; USE ITERATION TO SEARCH FOR GRID VALUES
+    const placeShip = (index, ship, siblings) => {
         // Checks to see if ship will fit horizontally from left to right
         let stringIndex = String(index).split('')
         let firstNumIndex = stringIndex[0];
@@ -45,6 +46,7 @@ const Gameboard = () => {
         };
 
         // Might need to duplicate and move into successful outcomes of above function
+        // WILL NEED TO CHANGE ONCE SHIPS CAN BE PLACED VERTICALLY
         for (let i = 0; i < ship.size; i++) {
             board[index + i] = ship.index[i] + letter;
         };
