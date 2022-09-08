@@ -34,11 +34,27 @@ const Gameboard = () => {
         let secondNumIndex = nextLine[0];
         let letter;
 
+        // Determines if there's a ship placed in the designated spot
+        const isShipHere = () => {
+            let canPlace = true;
+            console.log('here');
+
+            for (let i = index; i < (index + siblings); i++) {
+                if (board[i] !== ' ') {
+                    return canPlace = false;
+                } else {
+                    canPlace = true;
+                }
+            }
+
+            return canPlace;
+        }
+
          // Assigns a letter to map the grid square to the ship object on it
         if (index + ship.size <= 10) {
             letter = placementHelper(ship.size);
         } else {
-            if (firstNumIndex !== secondNumIndex) {
+            if (firstNumIndex !== secondNumIndex || isShipHere() === false) {
                 return 'Error';
             } else {
                 letter = placementHelper(ship.size);

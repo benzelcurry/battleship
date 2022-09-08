@@ -4,10 +4,6 @@ import placementHelper from './placementHelper';
 
 export default function drawBoard(gameboard, playerBoard, playerStatus) {
     // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
-    gameboard.placeShip(23, gameboard.smallShip);
-    gameboard.placeShip(41, gameboard.medShip);
-    gameboard.placeShip(53, gameboard.bigShip);
-    gameboard.placeShip(90, gameboard.hugeShip);
 
     let xtraPlaced = false;
     let smallPlaced = false;
@@ -66,30 +62,32 @@ export default function drawBoard(gameboard, playerBoard, playerStatus) {
             // 1. Do following tasks in order
             // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
             if (!xtraPlaced) {
-                siblings = 1;
+                siblings = 2;
                 if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
+                    gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings);
                     square.textContent = 'XS';
                     square.nextElementSibling.textContent = 'XS';
                     xtraPlaced = true;
                 }
             } else if (!smallPlaced) {
-                siblings = 2;
+                siblings = 3;
                 if (gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
-                    gameboard.placeShip(Number(square.id), gameboard.smallShip);
+                    gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings);
                     square.textContent = 'S';
                     square.nextElementSibling.textContent = 'S';
                     square.nextElementSibling.nextElementSibling.textContent = 'S';
                     smallPlaced = true;
                 }
             } else if (!medPlaced) {
-                if (gameboard.placeShip(Number(square.id), gameboard.medShip) === 'Error') {
+                siblings = 4;
+                if (gameboard.placeShip(Number(square.id), gameboard.medShip, siblings) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
-                    gameboard.placeShip(Number(square.id), gameboard.medShip);
+                    gameboard.placeShip(Number(square.id), gameboard.medShip, siblings);
                     square.textContent = 'M';
                     square.nextElementSibling.textContent = 'M';
                     square.nextElementSibling.nextElementSibling.textContent = 'M';
@@ -97,10 +95,11 @@ export default function drawBoard(gameboard, playerBoard, playerStatus) {
                     medPlaced = true;
                 }
             } else if (!bigPlaced) {
-                if (gameboard.placeShip(Number(square.id), gameboard.bigShip) === 'Error') {
+                siblings = 5;
+                if (gameboard.placeShip(Number(square.id), gameboard.bigShip, siblings) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
-                    gameboard.placeShip(Number(square.id), gameboard.bigShip);
+                    gameboard.placeShip(Number(square.id), gameboard.bigShip, siblings);
                     square.textContent = 'B';
                     square.nextElementSibling.textContent = 'B';
                     square.nextElementSibling.nextElementSibling.textContent = 'B';
@@ -109,10 +108,11 @@ export default function drawBoard(gameboard, playerBoard, playerStatus) {
                     bigPlaced = true;
                 }
             } else if (!hugePlaced) {
-                if (gameboard.placeShip(Number(square.id), gameboard.hugeShip) === 'Error') {
+                siblings = 6;
+                if (gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
-                    gameboard.placeShip(Number(square.id), gameboard.hugeShip);
+                    gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings);
                     square.textContent = 'H';
                     square.nextElementSibling.textContent = 'H';
                     square.nextElementSibling.nextElementSibling.textContent = 'H';
