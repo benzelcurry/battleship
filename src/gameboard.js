@@ -25,8 +25,7 @@ const Gameboard = () => {
     let bigArr = ['O', 'O', 'O', 'O', 'O'];
     let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O']; 
 
-    // MAKE IT SO CAN'T PLACE SHIPS WHERE ONE'S ALREADY BEEN PLACED; USE ITERATION TO SEARCH FOR GRID VALUES
-    const placeShip = (index, ship, siblings, computer) => {
+    const placeShip = (index, ship, siblings, isVertical, computer) => {
         // Checks to see if ship will fit horizontally from left to right
         let stringIndex = String(index).split('')
         let firstNumIndex = stringIndex[0];

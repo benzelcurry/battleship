@@ -11,6 +11,29 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
     let bigPlaced = false;
     let hugePlaced = false;
 
+    const horizontal = document.querySelector('.horizontal');
+    const vertical = document.querySelector('.vertical');
+    let isHorizontal = true;
+    let isVertical = false;
+
+    horizontal.addEventListener('click', () => {
+        if (isHorizontal === true) {
+            return;
+        } else {
+            isHorizontal = true;
+            isVertical = false;
+        };
+    });
+
+    vertical.addEventListener('click', () => {
+        if (isVertical === true) {
+            return;
+        } else {
+            isVertical = true;
+            isHorizontal = false;
+        };
+    });
+
     const xtraSmallSunk = document.createElement('div');
     xtraSmallSunk.classList.add('sunk');
     xtraSmallSunk.textContent = 'Extra small ship sunk';
@@ -60,11 +83,18 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
             let siblings;
 
             const markSquares = (sqSize) => {
-                for (let i = Number(square.id); i < (Number(square.id) + siblings); i++) {
-                    let thisSquare = document.getElementById(String(i));
-                    thisSquare.textContent = sqSize;
-                }
-            }
+                if (isVertical === false) {
+                    for (let i = Number(square.id); i < (Number(square.id) + siblings); i++) {
+                        let thisSquare = document.getElementById(String(i));
+                        thisSquare.textContent = sqSize;
+                    };
+                } else {
+                    for (let i = Number(square.id); i > (Number(square.id) - (siblings * 10)); i -= 10) {
+                        let thisSquare = document.getElementById(String(i));
+                        thisSquare.textContent = sqSize;
+                    };
+                };
+            };
 
             // 1. Do following tasks in order
             // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
@@ -73,7 +103,7 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                 if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings, computer) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
-                    gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings);
+                    gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings, isVertical);
                     markSquares('XS');
                     xtraPlaced = true;
                 }
@@ -82,7 +112,7 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                 if (gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
-                    gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings);
+                    gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings, isVertical);
                     markSquares('S');
                     smallPlaced = true;
                 }
@@ -91,7 +121,7 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                 if (gameboard.placeShip(Number(square.id), gameboard.medShip, siblings) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
-                    gameboard.placeShip(Number(square.id), gameboard.medShip, siblings);
+                    gameboard.placeShip(Number(square.id), gameboard.medShip, siblings, isVertical);
                     markSquares('M');
                     medPlaced = true;
                 }
@@ -100,7 +130,7 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                 if (gameboard.placeShip(Number(square.id), gameboard.bigShip, siblings) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
-                    gameboard.placeShip(Number(square.id), gameboard.bigShip, siblings);
+                    gameboard.placeShip(Number(square.id), gameboard.bigShip, siblings, isVertical);
                     markSquares('B');
                     bigPlaced = true;
                 }
@@ -109,7 +139,7 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                 if (gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
-                    gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings);
+                    gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings, isVertical);
                     markSquares('H');
                     square.style.backgroundColor = 'white';
                     square.nextElementSibling.style.backgroundColor = 'white';
