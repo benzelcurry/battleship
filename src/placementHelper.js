@@ -1,6 +1,5 @@
 // Helper module for hovering/unhovering grid while placing ships to
 // avoid cluttering interface.js
-// *** INCREDIBLY UGLY, COULD FIX THIS WITH RECURSION ***
 // Could fix so it doesn't log errors in console when hovering an
 // unplaceable spot, but not a priority.
 
@@ -12,32 +11,6 @@ const placementHelper = (xtra, small, med, big, huge, square, computer, isVertic
     let secondNumIndex;
 
     const colorSquares = (color) => {
-        // if (shipSize === 2) {
-        //     square.style.backgroundColor = color;
-        //     square.nextElementSibling.style.backgroundColor = color;
-        // } else if (shipSize === 3) {
-        //     square.style.backgroundColor = color;
-        //     square.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        // } else if (shipSize === 4) {
-        //     square.style.backgroundColor = color;
-        //     square.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        // } else if (shipSize === 5) {
-        //     square.style.backgroundColor = color;
-        //     square.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        // } else if (shipSize === 6) {
-        //     square.style.backgroundColor = color;
-        //     square.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        //     square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        // };
         if (computer) {
             return;
         } else {
@@ -55,71 +28,75 @@ const placementHelper = (xtra, small, med, big, huge, square, computer, isVertic
         }
     };
 
+    const containsText = (x) => {
+        let hasText;
+
+        if (!isVertical) {
+            for (let i = Number(square.id); i < Number(square.id) + x; i++) {
+                let thisSquare = document.getElementById(i);
+                if (!thisSquare.textContent) {
+                    hasText = false;
+                } else {
+                    return hasText = true;
+                }
+            }
+
+            return hasText;
+        } else {
+            for (let i = Number(square.id); i > Number(square.id) - (x * 10); i -= 10) {
+                let thisSquare = document.getElementById(i);
+                if (!thisSquare.textContent) {
+                    hasText = false;
+                } else {
+                    return hasText = true;
+                }
+            }
+
+            return hasText;
+        }
+    }
+
+    const helper = (x) => {
+        shipSize = x;
+        nextLine = String(Number(square.id) + shipSize - 1).split('');
+        secondNumIndex = (nextLine[0]);
+        if (!isVertical) {
+            if (Number(square.id) + shipSize <= 10) {
+                colorSquares('lightgreen');
+            } else {
+                if (Number(square.id) + 2 > 100 || firstNumIndex !== secondNumIndex || containsText(x) === true) {
+                    colorSquares('red');
+                } else {
+                    colorSquares('lightgreen');
+                }
+            }
+        } else {
+            if (x === 2) {
+                if (Number(square.id) < 10 || containsText(x) === true) {
+                    colorSquares('red');
+                } else {
+                    colorSquares('lightgreen');
+                };
+            } else {
+                if (Number(square.id) - ((x - 1) * 10) < 0 || containsText(x) === true) {
+                    colorSquares('red');
+                } else {
+                    colorSquares('lightgreen');
+                };
+            };
+        };
+    };
+
     if (!xtra) {
-        shipSize = 2;
-        nextLine = String(Number(square.id) + shipSize - 1).split('');
-        secondNumIndex = (nextLine[0]);
-        if (Number(square.id) + shipSize <= 10) {
-            colorSquares('lightgreen');
-        } else {
-            if (Number(square.id) + 2 > 100 || firstNumIndex !== secondNumIndex) {
-                colorSquares('red');
-            } else {
-                colorSquares('lightgreen');
-            }
-        }
+        helper(2);
     } else if (!small) {
-        shipSize = 3;
-        nextLine = String(Number(square.id) + shipSize - 1).split('');
-        secondNumIndex = (nextLine[0]);
-        if (Number(square.id) + shipSize <= 10) {
-            colorSquares('lightgreen');
-        } else {
-            if (Number(square.id) + 3 > 100 || (firstNumIndex !== secondNumIndex)) {
-                colorSquares('red');
-            } else {
-                colorSquares('lightgreen');
-            }
-        }
+        helper(3);
     } else if (!med) {
-        shipSize = 4;
-        nextLine = String(Number(square.id) + shipSize - 1).split('');
-        secondNumIndex = (nextLine[0]);
-        if (Number(square.id) + shipSize <= 10) {
-            colorSquares('lightgreen');
-        } else {
-            if (Number(square.id) + 4 > 100 || firstNumIndex !== secondNumIndex) {
-                colorSquares('red');
-            } else {
-                colorSquares('lightgreen');
-            }
-        }
+        helper(4);
     } else if (!big) {
-        shipSize = 5;
-        nextLine = String(Number(square.id) + shipSize - 1).split('');
-        secondNumIndex = (nextLine[0]);
-        if (Number(square.id) + shipSize <= 10) {
-            colorSquares('lightgreen');
-        } else {
-            if (Number(square.id) + 5 > 100 || firstNumIndex !== secondNumIndex) {
-                colorSquares('red');
-            } else {
-                colorSquares('lightgreen');
-            }
-        }
+        helper(5);
     } else if (!huge) {
-        shipSize = 6;
-        nextLine = String(Number(square.id) + shipSize - 1).split('');
-        secondNumIndex = (nextLine[0]);
-        if (Number(square.id) + shipSize <= 10) {
-            colorSquares('lightgreen');
-        } else {
-            if (Number(square.id) + 6 > 100 || firstNumIndex !== secondNumIndex) {
-                colorSquares('red');
-            } else {
-                colorSquares('lightgreen');
-            }
-        }
+        helper(6);
     } else { 
         square.style.backgroundColor = 'grey';
     };

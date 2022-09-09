@@ -146,12 +146,17 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings, isVertical);
                     markSquares('H');
-                    square.style.backgroundColor = 'white';
-                    square.nextElementSibling.style.backgroundColor = 'white';
-                    square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                    square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                    square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                    if (!isVertical) {
+                        for (let i = Number(square.id); i < (Number(square.id) + 6); i++) {
+                            let thisSquare = document.getElementById(i);
+                            thisSquare.style.backgroundColor = 'white';
+                        }
+                    } else {
+                        for (let i = Number(square.id); i > (Number(square.id) - (6 * 10)); i -= 10) {
+                            let thisSquare = document.getElementById(i);
+                            thisSquare.style.backgroundColor = 'white';
+                        }
+                    }
                     hugePlaced = true;
                 }
             } else {
