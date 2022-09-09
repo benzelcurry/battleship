@@ -62,17 +62,28 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
         playerBoard.appendChild(square);
 
         square.addEventListener('mouseover', () => {
-            placementHelper(xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced, square);
+            placementHelper(xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced, square, computer, isVertical);
         });
 
         square.addEventListener('mouseleave', () => {
             if (!hugePlaced) {
-                square.style.backgroundColor = 'white';
-                square.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                // square.style.backgroundColor = 'white';
+                // square.nextElementSibling.style.backgroundColor = 'white';
+                // square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                // square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                // square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                // square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                if (!isVertical) {
+                    for (let i = Number(square.id); i < (Number(square.id) + 6); i++) {
+                        let thisSquare = document.getElementById(i);
+                        thisSquare.style.backgroundColor = 'white';
+                    }
+                } else {
+                    for (let i = Number(square.id); i > (Number(square.id) - (6 * 10)); i -= 10) {
+                        let thisSquare = document.getElementById(i);
+                        thisSquare.style.backgroundColor = 'white';
+                    }
+                }
             } else {
                 square.style.backgroundColor = 'white';
             }
