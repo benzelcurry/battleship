@@ -523,39 +523,71 @@ const Gameboard = () => {
         // Determines if there's a ship placed in the designated spot
         const isShipHere = () => {
             let canPlace = true;
-            console.log('here');
 
-            for (let i = index; i < (index + siblings); i++) {
-                if (board[i] !== ' ') {
-                    return canPlace = false;
-                } else {
-                    canPlace = true;
+            if (!isVertical) {
+                for (let i = index; i < (index + siblings); i++) {
+                    if (board[i] !== ' ') {
+                        return canPlace = false;
+                    } else {
+                        canPlace = true;
+                    }
+                }
+            // NEW CHUNK, CHECKS FOR VERTICALITY, FIX IF BROKEN
+            } else {
+                for (let i = index; i > index - (siblings * 10); i -=10) {
+                    if (board[i] !== ' ') {
+                        return canPlace = false;
+                    } else {
+                        canPlace = true;
+                    }
                 }
             }
 
             return canPlace;
         }
 
-         // Assigns a letter to map the grid square to the ship object on it
-        if (index + ship.size <= 10) {
-            if (isShipHere() === false || computer === true) {
-                return 'Error';
+        // Assigns a letter to map the grid square to the ship object on it
+        // The placementHelper() used is unrelated to the placementHelper.js 
+        // module; unfortunate naming convention that will be fixed if time
+        // is found
+        if (!isVertical) {
+            if (index + ship.size <= 10) {
+                if (isShipHere() === false || computer === true) {
+                    return 'Error';
+                } else {
+                    letter = placementHelper(ship.size);
+                }
             } else {
-                letter = placementHelper(ship.size);
-            }
+                if (firstNumIndex !== secondNumIndex || isShipHere() === false || computer === true) {
+                    return 'Error';
+                } else {
+                    letter = placementHelper(ship.size);
+                };
+            };
         } else {
-            if (firstNumIndex !== secondNumIndex || isShipHere() === false || computer === true) {
+            if (index < 10) {
+                console.log('not here bud')
                 return 'Error';
             } else {
-                letter = placementHelper(ship.size);
+                if (index - ((ship.size - 1) * 10) < 0 || isShipHere() === false) {
+                    return 'Error';
+                } else {
+                    letter = placementHelper(ship.size);
+                };
             }
         };
 
-        // Might need to duplicate and move into successful outcomes of above function
-        // WILL NEED TO CHANGE ONCE SHIPS CAN BE PLACED VERTICALLY
-        for (let i = 0; i < ship.size; i++) {
-            board[index + i] = ship.index[i] + letter;
+        // Marks where ships are located on the board
+        if (!isVertical) {
+            for (let i = 0; i < ship.size; i++) {
+                board[index + i] = ship.index[i] + letter;
+            };
+        } else {
+            for (let i = 0; i < (ship.size * 10); i += 10) {
+                board[index - i] = ship.index[i] + letter;
+            };
         };
+        
     };
 
     const receiveAttack = (index) => {
@@ -744,12 +776,6 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
 
         square.addEventListener('mouseleave', () => {
             if (!hugePlaced) {
-                // square.style.backgroundColor = 'white';
-                // square.nextElementSibling.style.backgroundColor = 'white';
-                // square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                // square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                // square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                // square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
                 if (!isVertical) {
                     for (let i = Number(square.id); i < (Number(square.id) + 6); i++) {
                         let thisSquare = document.getElementById(i);
@@ -788,7 +814,7 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
             // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
             if (!xtraPlaced) {
                 siblings = 2;
-                if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings, computer) === 'Error') {
+                if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings, isVertical, computer) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings, isVertical);
@@ -797,7 +823,7 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
                 }
             } else if (!smallPlaced) {
                 siblings = 3;
-                if (gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings) === 'Error') {
+                if (gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings, isVertical, computer) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.smallShip, siblings, isVertical);
@@ -806,7 +832,7 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
                 }
             } else if (!medPlaced) {
                 siblings = 4;
-                if (gameboard.placeShip(Number(square.id), gameboard.medShip, siblings) === 'Error') {
+                if (gameboard.placeShip(Number(square.id), gameboard.medShip, siblings, isVertical, computer) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.medShip, siblings, isVertical);
@@ -815,7 +841,7 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
                 }
             } else if (!bigPlaced) {
                 siblings = 5;
-                if (gameboard.placeShip(Number(square.id), gameboard.bigShip, siblings) === 'Error') {
+                if (gameboard.placeShip(Number(square.id), gameboard.bigShip, siblings, isVertical, computer) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.bigShip, siblings, isVertical);
@@ -824,7 +850,7 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
                 }
             } else if (!hugePlaced) {
                 siblings = 6;
-                if (gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings) === 'Error') {
+                if (gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings, isVertical, computer) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings, isVertical);

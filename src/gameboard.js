@@ -36,39 +36,71 @@ const Gameboard = () => {
         // Determines if there's a ship placed in the designated spot
         const isShipHere = () => {
             let canPlace = true;
-            console.log('here');
 
-            for (let i = index; i < (index + siblings); i++) {
-                if (board[i] !== ' ') {
-                    return canPlace = false;
-                } else {
-                    canPlace = true;
+            if (!isVertical) {
+                for (let i = index; i < (index + siblings); i++) {
+                    if (board[i] !== ' ') {
+                        return canPlace = false;
+                    } else {
+                        canPlace = true;
+                    }
+                }
+            // NEW CHUNK, CHECKS FOR VERTICALITY, FIX IF BROKEN
+            } else {
+                for (let i = index; i > index - (siblings * 10); i -=10) {
+                    if (board[i] !== ' ') {
+                        return canPlace = false;
+                    } else {
+                        canPlace = true;
+                    }
                 }
             }
 
             return canPlace;
         }
 
-         // Assigns a letter to map the grid square to the ship object on it
-        if (index + ship.size <= 10) {
-            if (isShipHere() === false || computer === true) {
-                return 'Error';
+        // Assigns a letter to map the grid square to the ship object on it
+        // The placementHelper() used is unrelated to the placementHelper.js 
+        // module; unfortunate naming convention that will be fixed if time
+        // is found
+        if (!isVertical) {
+            if (index + ship.size <= 10) {
+                if (isShipHere() === false || computer === true) {
+                    return 'Error';
+                } else {
+                    letter = placementHelper(ship.size);
+                }
             } else {
-                letter = placementHelper(ship.size);
-            }
+                if (firstNumIndex !== secondNumIndex || isShipHere() === false || computer === true) {
+                    return 'Error';
+                } else {
+                    letter = placementHelper(ship.size);
+                };
+            };
         } else {
-            if (firstNumIndex !== secondNumIndex || isShipHere() === false || computer === true) {
+            if (index < 10) {
+                console.log('not here bud')
                 return 'Error';
             } else {
-                letter = placementHelper(ship.size);
+                if (index - ((ship.size - 1) * 10) < 0 || isShipHere() === false) {
+                    return 'Error';
+                } else {
+                    letter = placementHelper(ship.size);
+                };
             }
         };
 
-        // Might need to duplicate and move into successful outcomes of above function
-        // WILL NEED TO CHANGE ONCE SHIPS CAN BE PLACED VERTICALLY
-        for (let i = 0; i < ship.size; i++) {
-            board[index + i] = ship.index[i] + letter;
+        // Marks where ships are located on the board
+        if (!isVertical) {
+            for (let i = 0; i < ship.size; i++) {
+                board[index + i] = ship.index[i] + letter;
+            };
+        } else {
+            for (let i = 0; i < (ship.size * 10); i += 10) {
+                board[index - i] = ship.index[i] + letter;
+            };
         };
+        
     };
 
     const receiveAttack = (index) => {
