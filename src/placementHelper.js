@@ -47,7 +47,6 @@ const placementHelper = (xtra, small, med, big, huge, square) => {
         if (Number(square.id) + shipSize <= 10) {
             colorSquares('lightgreen');
         } else {
-            console.log('no, here');
             if (Number(square.id) + 2 > 100 || firstNumIndex !== secondNumIndex) {
                 colorSquares('red');
             } else {

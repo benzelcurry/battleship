@@ -52,7 +52,11 @@ const Gameboard = () => {
 
          // Assigns a letter to map the grid square to the ship object on it
         if (index + ship.size <= 10) {
-            letter = placementHelper(ship.size);
+            if (isShipHere() === false) {
+                return 'Error';
+            } else {
+                letter = placementHelper(ship.size);
+            }
         } else {
             if (firstNumIndex !== secondNumIndex || isShipHere() === false) {
                 return 'Error';
