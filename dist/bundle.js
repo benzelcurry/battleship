@@ -856,11 +856,33 @@ const placementHelper = (xtra, small, med, big, huge, square) => {
     let secondNumIndex;
 
     const colorSquares = (color) => {
-        for (let i = Number(square.id); i < (Number(square.id) + shipSize); i++) {
-            let thisSquare = document.getElementById(i);
-            thisSquare.style.backgroundColor = color;
-        }
-    }
+        if (shipSize === 2) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+        } else if (shipSize === 3) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        } else if (shipSize === 4) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        } else if (shipSize === 5) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        } else if (shipSize === 6) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        };
+    };
 
     if (!xtra) {
         shipSize = 2;
@@ -1019,6 +1041,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gameboard_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_gameboard_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 // Main module where everything comes together
+
+// Steps to complete before project completion:
+// 1. ADD BUTTON TO ALLOW USERS TO PLACE SHIPS VERTICALLY
+// 1.1 ADD OPTIONS TO PLACEMENT FUNCTIONS TO ENSURE SHIPS AREN'T OVERLAPPING/GOING OFF EDGES WHEN VERTICAL
+// 2. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
+// 3. ADD A TURN-BASED SYSTEM
+// 4. GIVE COMPUTER A BASIC AI
+// 5. ANNOUNCE WINNER ONCE GAME IS OVER
 
 
 

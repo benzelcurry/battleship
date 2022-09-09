@@ -12,11 +12,33 @@ const placementHelper = (xtra, small, med, big, huge, square) => {
     let secondNumIndex;
 
     const colorSquares = (color) => {
-        for (let i = Number(square.id); i < (Number(square.id) + shipSize); i++) {
-            let thisSquare = document.getElementById(i);
-            thisSquare.style.backgroundColor = color;
-        }
-    }
+        if (shipSize === 2) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+        } else if (shipSize === 3) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        } else if (shipSize === 4) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        } else if (shipSize === 5) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        } else if (shipSize === 6) {
+            square.style.backgroundColor = color;
+            square.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        };
+    };
 
     if (!xtra) {
         shipSize = 2;
