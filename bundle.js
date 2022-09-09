@@ -739,17 +739,28 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
         playerBoard.appendChild(square);
 
         square.addEventListener('mouseover', () => {
-            _placementHelper__WEBPACK_IMPORTED_MODULE_0___default()(xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced, square);
+            _placementHelper__WEBPACK_IMPORTED_MODULE_0___default()(xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced, square, computer, isVertical);
         });
 
         square.addEventListener('mouseleave', () => {
             if (!hugePlaced) {
-                square.style.backgroundColor = 'white';
-                square.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
-                square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                // square.style.backgroundColor = 'white';
+                // square.nextElementSibling.style.backgroundColor = 'white';
+                // square.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                // square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                // square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                // square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = 'white';
+                if (!isVertical) {
+                    for (let i = Number(square.id); i < (Number(square.id) + 6); i++) {
+                        let thisSquare = document.getElementById(i);
+                        thisSquare.style.backgroundColor = 'white';
+                    }
+                } else {
+                    for (let i = Number(square.id); i > (Number(square.id) - (6 * 10)); i -= 10) {
+                        let thisSquare = document.getElementById(i);
+                        thisSquare.style.backgroundColor = 'white';
+                    }
+                }
             } else {
                 square.style.backgroundColor = 'white';
             }
@@ -881,7 +892,7 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
 // Could fix so it doesn't log errors in console when hovering an
 // unplaceable spot, but not a priority.
 
-const placementHelper = (xtra, small, med, big, huge, square) => {
+const placementHelper = (xtra, small, med, big, huge, square, computer, isVertical) => {
     let stringIndex = (square.id).split('')
     let firstNumIndex = stringIndex[0];
     let shipSize;
@@ -889,32 +900,47 @@ const placementHelper = (xtra, small, med, big, huge, square) => {
     let secondNumIndex;
 
     const colorSquares = (color) => {
-        if (shipSize === 2) {
-            square.style.backgroundColor = color;
-            square.nextElementSibling.style.backgroundColor = color;
-        } else if (shipSize === 3) {
-            square.style.backgroundColor = color;
-            square.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        } else if (shipSize === 4) {
-            square.style.backgroundColor = color;
-            square.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        } else if (shipSize === 5) {
-            square.style.backgroundColor = color;
-            square.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        } else if (shipSize === 6) {
-            square.style.backgroundColor = color;
-            square.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-            square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
-        };
+        // if (shipSize === 2) {
+        //     square.style.backgroundColor = color;
+        //     square.nextElementSibling.style.backgroundColor = color;
+        // } else if (shipSize === 3) {
+        //     square.style.backgroundColor = color;
+        //     square.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        // } else if (shipSize === 4) {
+        //     square.style.backgroundColor = color;
+        //     square.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        // } else if (shipSize === 5) {
+        //     square.style.backgroundColor = color;
+        //     square.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        // } else if (shipSize === 6) {
+        //     square.style.backgroundColor = color;
+        //     square.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        //     square.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.backgroundColor = color;
+        // };
+        if (computer) {
+            return;
+        } else {
+            if (!isVertical) {
+                for (let i = Number(square.id); i < (Number(square.id) + shipSize); i++) {
+                    let thisSquare = document.getElementById(i);
+                    thisSquare.style.backgroundColor = color;
+                }
+            } else {
+                for (let i = Number(square.id); i > (Number(square.id) - (shipSize * 10)); i -= 10) {
+                    let thisSquare = document.getElementById(i);
+                    thisSquare.style.backgroundColor = color;
+                }
+            }
+        }
     };
 
     if (!xtra) {
