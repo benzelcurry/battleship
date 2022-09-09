@@ -2,7 +2,7 @@
 
 import placementHelper from './placementHelper';
 
-export default function drawBoard(gameboard, playerBoard, playerStatus) {
+export default function drawBoard(gameboard, playerBoard, playerStatus, computer) {
     // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
 
     let xtraPlaced = false;
@@ -70,7 +70,7 @@ export default function drawBoard(gameboard, playerBoard, playerStatus) {
             // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
             if (!xtraPlaced) {
                 siblings = 2;
-                if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings) === 'Error') {
+                if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings, computer) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings);

@@ -26,7 +26,7 @@ const Gameboard = () => {
     let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O']; 
 
     // MAKE IT SO CAN'T PLACE SHIPS WHERE ONE'S ALREADY BEEN PLACED; USE ITERATION TO SEARCH FOR GRID VALUES
-    const placeShip = (index, ship, siblings) => {
+    const placeShip = (index, ship, siblings, computer) => {
         // Checks to see if ship will fit horizontally from left to right
         let stringIndex = String(index).split('')
         let firstNumIndex = stringIndex[0];
@@ -52,13 +52,13 @@ const Gameboard = () => {
 
          // Assigns a letter to map the grid square to the ship object on it
         if (index + ship.size <= 10) {
-            if (isShipHere() === false) {
+            if (isShipHere() === false || computer === true) {
                 return 'Error';
             } else {
                 letter = placementHelper(ship.size);
             }
         } else {
-            if (firstNumIndex !== secondNumIndex || isShipHere() === false) {
+            if (firstNumIndex !== secondNumIndex || isShipHere() === false || computer === true) {
                 return 'Error';
             } else {
                 letter = placementHelper(ship.size);

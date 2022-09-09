@@ -513,7 +513,7 @@ const Gameboard = () => {
     let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O']; 
 
     // MAKE IT SO CAN'T PLACE SHIPS WHERE ONE'S ALREADY BEEN PLACED; USE ITERATION TO SEARCH FOR GRID VALUES
-    const placeShip = (index, ship, siblings) => {
+    const placeShip = (index, ship, siblings, computer) => {
         // Checks to see if ship will fit horizontally from left to right
         let stringIndex = String(index).split('')
         let firstNumIndex = stringIndex[0];
@@ -539,13 +539,13 @@ const Gameboard = () => {
 
          // Assigns a letter to map the grid square to the ship object on it
         if (index + ship.size <= 10) {
-            if (isShipHere() === false) {
+            if (isShipHere() === false || computer === true) {
                 return 'Error';
             } else {
                 letter = placementHelper(ship.size);
             }
         } else {
-            if (firstNumIndex !== secondNumIndex || isShipHere() === false) {
+            if (firstNumIndex !== secondNumIndex || isShipHere() === false || computer === true) {
                 return 'Error';
             } else {
                 letter = placementHelper(ship.size);
@@ -680,7 +680,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function drawBoard(gameboard, playerBoard, playerStatus) {
+function drawBoard(gameboard, playerBoard, playerStatus, computer) {
     // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
 
     let xtraPlaced = false;
@@ -748,7 +748,7 @@ function drawBoard(gameboard, playerBoard, playerStatus) {
             // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
             if (!xtraPlaced) {
                 siblings = 2;
-                if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings) === 'Error') {
+                if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings, computer) === 'Error') {
                     alert('You can\'t place a ship here');
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings);
@@ -1063,9 +1063,10 @@ const board1 = document.querySelector('.first');
 const board2 = document.querySelector('.second');
 const player1Status = document.querySelector('.player1');
 const player2Status = document.querySelector('.player2');
+let computer;
 
-(0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard1, board1, player1Status);
-(0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard2, board2, player2Status);
+(0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard1, board1, player1Status, computer = false);
+(0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard2, board2, player2Status, computer = true);
 })();
 
 /******/ })()

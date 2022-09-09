@@ -18,6 +18,7 @@ const board1 = document.querySelector('.first');
 const board2 = document.querySelector('.second');
 const player1Status = document.querySelector('.player1');
 const player2Status = document.querySelector('.player2');
+let computer;
 
-drawBoard(gameboard1, board1, player1Status);
-drawBoard(gameboard2, board2, player2Status);
+drawBoard(gameboard1, board1, player1Status, computer = false);
+drawBoard(gameboard2, board2, player2Status, computer = true);
