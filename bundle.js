@@ -357,7 +357,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n    height: 100vh;\n    width: 100vw;\n    margin: 0px;\n    font-size: 18px;\n    display: grid;\n    /* align-items: center;\n    justify-content: center; */\n    grid-template-columns: repeat(3, 1fr);\n}\n\n.board-container {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n}\n\n.gameboard {\n    height: 400px;\n    width: 400px;\n    display: grid;\n    margin: 10px;\n    gap: none;\n    grid-template-columns: repeat(10, 1fr);\n    grid-template-rows: repeat(10, 1fr);\n    align-items: center;\n    justify-content: center;\n    border: solid 2px black;\n    border-bottom: solid 4px black;\n    border-top: solid 4px black;\n}\n\n.square {\n    box-sizing: border-box;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n    width: auto;\n    border: solid 2px black;\n}\n\n/* .square:hover {\n    backdrop-filter: brightness(0.7);\n} */\n\n.status-container {\n    margin: 75px;\n    gap: 50px;\n    border-left: solid 4px black;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.player-status {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: space-around;\n    flex-grow: 1;\n}\n\n.player1,\n.player2 {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    font-weight: bold;\n}\n\n.player1 > *,\n.player2 > * {\n    font-weight: 400;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n    height: 100vh;\n    width: 100vw;\n    margin: 0px;\n    font-size: 18px;\n    display: grid;\n    /* align-items: center;\n    justify-content: center; */\n    grid-template-columns: repeat(3, 1fr);\n}\n\n.board-container {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n}\n\n.board-container2 {\n    display: none;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n}\n\n.gameboard {\n    height: 400px;\n    width: 400px;\n    display: grid;\n    margin: 10px;\n    gap: none;\n    grid-template-columns: repeat(10, 1fr);\n    grid-template-rows: repeat(10, 1fr);\n    align-items: center;\n    justify-content: center;\n    border: solid 2px black;\n    border-bottom: solid 4px black;\n    border-top: solid 4px black;\n}\n\n.square {\n    box-sizing: border-box;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100%;\n    width: auto;\n    border: solid 2px black;\n}\n\n/* .square:hover {\n    backdrop-filter: brightness(0.7);\n} */\n\n.status-container {\n    margin: 75px;\n    gap: 50px;\n    border-left: solid 4px black;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.player-status {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: space-around;\n    flex-grow: 1;\n}\n\n.player1,\n.player2 {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    font-weight: bold;\n}\n\n.player1 > *,\n.player2 > * {\n    font-weight: 400;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -510,7 +510,7 @@ const Gameboard = () => {
     let smallArr = ['O', 'O', 'O'];
     let medArr = ['O', 'O', 'O', 'O'];
     let bigArr = ['O', 'O', 'O', 'O', 'O'];
-    let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O']; 
+    let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O'];
 
     const placeShip = (index, ship, siblings, isVertical, computer) => {
         // Checks to see if ship will fit horizontally from left to right
@@ -552,7 +552,7 @@ const Gameboard = () => {
         // is found
         if (!isVertical) {
             if (index + ship.size <= 10) {
-                if (isShipHere() === false || computer === true) {
+                if (isShipHere() === false || computer) {
                     return 'Error';
                 } else {
                     letter = placementHelper(ship.size);
@@ -565,8 +565,7 @@ const Gameboard = () => {
                 };
             };
         } else {
-            if (index < 10) {
-                console.log('not here bud')
+            if (index < 10 || computer) {
                 return 'Error';
             } else {
                 if (index - ((ship.size - 1) * 10) < 0 || isShipHere() === false) {
@@ -711,14 +710,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function drawBoard(gameboard, playerBoard, playerStatus, computer) {
+function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Container) {
     // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
 
+    // MAKE IT SO ONCE ALL USER SHIPS PLACED, CAN ATTACK ENEMY BOARD; GOOD SPOT TO IMPLEMENT TURNS
     let xtraPlaced = false;
     let smallPlaced = false;
     let medPlaced = false;
     let bigPlaced = false;
     let hugePlaced = false;
+
+   
+    if (computer === true) {
+        gameboard.placeShip(3, gameboard.xtraSmallShip, 2, false);
+        gameboard.placeShip(13, gameboard.smallShip, 3, false);
+        gameboard.placeShip(23, gameboard.medShip, 4, false);
+        gameboard.placeShip(33, gameboard.bigShip, 5, false);
+        gameboard.placeShip(41, gameboard.hugeShip, 6, false);
+        xtraPlaced = true;
+        smallPlaced = true;
+        medPlaced = true;
+        bigPlaced = true;
+        hugePlaced = true;
+    };
+
 
     const horizontal = document.querySelector('.horizontal');
     const vertical = document.querySelector('.vertical');
@@ -795,6 +810,7 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
         // Places ships, then executes attack on grid square clicked
         square.addEventListener('click', () => {
             let siblings;
+            console.log({xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced});
 
             const markSquares = (sqSize) => {
                 if (isVertical === false) {
@@ -810,8 +826,6 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
                 };
             };
 
-            // 1. Do following tasks in order
-            // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
             if (!xtraPlaced) {
                 siblings = 2;
                 if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings, isVertical, computer) === 'Error') {
@@ -855,6 +869,8 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings, isVertical);
                     markSquares('H');
+                    hugePlaced = true;
+                    player2Container.style.display = 'flex';
                     if (!isVertical) {
                         for (let i = Number(square.id); i < (Number(square.id) + 6); i++) {
                             let thisSquare = document.getElementById(i);
@@ -866,7 +882,6 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer) {
                             thisSquare.style.backgroundColor = 'white';
                         }
                     }
-                    hugePlaced = true;
                 }
             } else {
             // 2. Once all ships been placed, start checking for hits
@@ -929,6 +944,7 @@ const placementHelper = (xtra, small, med, big, huge, square, computer, isVertic
     let nextLine;
     let secondNumIndex;
 
+    // *edited to include hugePlaced
     const colorSquares = (color) => {
         if (computer) {
             return;
@@ -1109,12 +1125,10 @@ __webpack_require__.r(__webpack_exports__);
 // Main module where everything comes together
 
 // Steps to complete before project completion:
-// 1. ADD BUTTON TO ALLOW USERS TO PLACE SHIPS VERTICALLY
-// 1.1 ADD OPTIONS TO PLACEMENT FUNCTIONS TO ENSURE SHIPS AREN'T OVERLAPPING/GOING OFF EDGES WHEN VERTICAL
-// 2. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
-// 3. ADD A TURN-BASED SYSTEM
-// 4. GIVE COMPUTER A BASIC AI
-// 5. ANNOUNCE WINNER ONCE GAME IS OVER
+// 1. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
+// 2. ADD A TURN-BASED SYSTEM
+// 3. GIVE COMPUTER A BASIC AI
+// 4. ANNOUNCE WINNER ONCE GAME IS OVER
 
 
 
@@ -1126,9 +1140,10 @@ const board1 = document.querySelector('.first');
 const board2 = document.querySelector('.second');
 const player1Status = document.querySelector('.player1');
 const player2Status = document.querySelector('.player2');
+const player2Container = document.querySelector('.board-container2');
 let computer;
 
-(0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard1, board1, player1Status, computer = false);
+(0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard1, board1, player1Status, computer = false, player2Container);
 (0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard2, board2, player2Status, computer = true);
 })();
 
