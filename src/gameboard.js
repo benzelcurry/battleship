@@ -23,7 +23,7 @@ const Gameboard = () => {
     let smallArr = ['O', 'O', 'O'];
     let medArr = ['O', 'O', 'O', 'O'];
     let bigArr = ['O', 'O', 'O', 'O', 'O'];
-    let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O']; 
+    let hugeArr = ['O', 'O', 'O', 'O', 'O', 'O'];
 
     const placeShip = (index, ship, siblings, isVertical, computer) => {
         // Checks to see if ship will fit horizontally from left to right
@@ -65,7 +65,7 @@ const Gameboard = () => {
         // is found
         if (!isVertical) {
             if (index + ship.size <= 10) {
-                if (isShipHere() === false || computer === true) {
+                if (isShipHere() === false || computer) {
                     return 'Error';
                 } else {
                     letter = placementHelper(ship.size);
@@ -78,8 +78,7 @@ const Gameboard = () => {
                 };
             };
         } else {
-            if (index < 10) {
-                console.log('not here bud')
+            if (index < 10 || computer) {
                 return 'Error';
             } else {
                 if (index - ((ship.size - 1) * 10) < 0 || isShipHere() === false) {

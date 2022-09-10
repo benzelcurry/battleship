@@ -16,6 +16,13 @@ body {
     align-items: center;
 }
 
+.board-container2 {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .gameboard {
     height: 400px;
     width: 400px;

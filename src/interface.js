@@ -2,14 +2,30 @@
 
 import placementHelper from './placementHelper';
 
-export default function drawBoard(gameboard, playerBoard, playerStatus, computer) {
+export default function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Container) {
     // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
 
+    // MAKE IT SO ONCE ALL USER SHIPS PLACED, CAN ATTACK ENEMY BOARD; GOOD SPOT TO IMPLEMENT TURNS
     let xtraPlaced = false;
     let smallPlaced = false;
     let medPlaced = false;
     let bigPlaced = false;
     let hugePlaced = false;
+
+   
+    if (computer === true) {
+        gameboard.placeShip(3, gameboard.xtraSmallShip, 2, false);
+        gameboard.placeShip(13, gameboard.smallShip, 3, false);
+        gameboard.placeShip(23, gameboard.medShip, 4, false);
+        gameboard.placeShip(33, gameboard.bigShip, 5, false);
+        gameboard.placeShip(41, gameboard.hugeShip, 6, false);
+        xtraPlaced = true;
+        smallPlaced = true;
+        medPlaced = true;
+        bigPlaced = true;
+        hugePlaced = true;
+    };
+
 
     const horizontal = document.querySelector('.horizontal');
     const vertical = document.querySelector('.vertical');
@@ -86,6 +102,7 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
         // Places ships, then executes attack on grid square clicked
         square.addEventListener('click', () => {
             let siblings;
+            console.log({xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced});
 
             const markSquares = (sqSize) => {
                 if (isVertical === false) {
@@ -101,8 +118,6 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                 };
             };
 
-            // 1. Do following tasks in order
-            // ALLOW USER TO SWITCH SHIP ORIENTATION TO VERTICAL INSTEAD OF HORIZONTAL (add button to display)
             if (!xtraPlaced) {
                 siblings = 2;
                 if (gameboard.placeShip(Number(square.id), gameboard.xtraSmallShip, siblings, isVertical, computer) === 'Error') {
@@ -146,6 +161,8 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                 } else {
                     gameboard.placeShip(Number(square.id), gameboard.hugeShip, siblings, isVertical);
                     markSquares('H');
+                    hugePlaced = true;
+                    player2Container.style.display = 'flex';
                     if (!isVertical) {
                         for (let i = Number(square.id); i < (Number(square.id) + 6); i++) {
                             let thisSquare = document.getElementById(i);
@@ -157,7 +174,6 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                             thisSquare.style.backgroundColor = 'white';
                         }
                     }
-                    hugePlaced = true;
                 }
             } else {
             // 2. Once all ships been placed, start checking for hits

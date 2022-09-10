@@ -10,6 +10,7 @@ const placementHelper = (xtra, small, med, big, huge, square, computer, isVertic
     let nextLine;
     let secondNumIndex;
 
+    // *edited to include hugePlaced
     const colorSquares = (color) => {
         if (computer) {
             return;

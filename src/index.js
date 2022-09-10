@@ -1,12 +1,10 @@
 // Main module where everything comes together
 
 // Steps to complete before project completion:
-// 1. ADD BUTTON TO ALLOW USERS TO PLACE SHIPS VERTICALLY
-// 1.1 ADD OPTIONS TO PLACEMENT FUNCTIONS TO ENSURE SHIPS AREN'T OVERLAPPING/GOING OFF EDGES WHEN VERTICAL
-// 2. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
-// 3. ADD A TURN-BASED SYSTEM
-// 4. GIVE COMPUTER A BASIC AI
-// 5. ANNOUNCE WINNER ONCE GAME IS OVER
+// 1. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
+// 2. ADD A TURN-BASED SYSTEM
+// 3. GIVE COMPUTER A BASIC AI
+// 4. ANNOUNCE WINNER ONCE GAME IS OVER
 
 import './style.css';
 import Gameboard from './gameboard.js';
@@ -18,7 +16,8 @@ const board1 = document.querySelector('.first');
 const board2 = document.querySelector('.second');
 const player1Status = document.querySelector('.player1');
 const player2Status = document.querySelector('.player2');
+const player2Container = document.querySelector('.board-container2');
 let computer;
 
-drawBoard(gameboard1, board1, player1Status, computer = false);
+drawBoard(gameboard1, board1, player1Status, computer = false, player2Container);
 drawBoard(gameboard2, board2, player2Status, computer = true);
