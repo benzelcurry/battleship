@@ -592,7 +592,9 @@ const Gameboard = () => {
     const receiveAttack = (index) => {
         if (board[index] === ' ') {
             board[index] = 'M'
-        // NEED TO GET isSunk() RUNNING
+            return 'miss';
+        } else if (board[index] === 'M') {
+            return 'already hit';
         } else {
             if (board[index].split('').includes('x')) {
                 attackHelper(xtraSmallArr, xtraSmallShip);
@@ -606,8 +608,9 @@ const Gameboard = () => {
                 attackHelper(hugeArr, hugeShip);
             };
 
-            board[index] = 'X'
-        };
+            board[index] = 'X';
+            return 'hit';
+        }
     };
 
     // Returns true if no ships are left on board; otherwise, false
@@ -710,10 +713,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Container) {
     // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
-
-    // MAKE IT SO ONCE ALL USER SHIPS PLACED, CAN ATTACK ENEMY BOARD; GOOD SPOT TO IMPLEMENT TURNS
     let xtraPlaced = false;
     let smallPlaced = false;
     let medPlaced = false;
@@ -733,7 +735,6 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Contai
         bigPlaced = true;
         hugePlaced = true;
     };
-
 
     const horizontal = document.querySelector('.horizontal');
     const vertical = document.querySelector('.vertical');
@@ -896,6 +897,7 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Contai
                         square.textContent = 'X';
                         square.style.color = 'red';
                     };
+                    // gameboard.receiveAttack(square);
                 } else {
                     return;
                 }
@@ -1145,6 +1147,35 @@ let computer;
 
 (0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard1, board1, player1Status, computer = false, player2Container);
 (0,_interface__WEBPACK_IMPORTED_MODULE_2__["default"])(gameboard2, board2, player2Status, computer = true);
+
+const getRandomNum = (max) => {
+    return Math.floor(Math.random() * max);
+}
+
+const playerChildren = board1.children;
+
+board2.addEventListener('click', () => {
+    setTimeout(attackPlayer, 1000);
+});
+
+// Should go into its own module
+const attackPlayer = () => {
+    let location = getRandomNum(99);
+    console.log(gameboard1.board);
+    if (playerChildren[location].textContent === 'O' || playerChildren[location].textContent === 'X') {
+        attackPlayer();
+    } else if (gameboard1.receiveAttack(location) === 'hit') {
+        gameboard1.receiveAttack(location)
+        playerChildren[location].textContent = 'O';
+        playerChildren[location].style.color = 'green';
+    } else {
+        gameboard1.receiveAttack(location)
+        playerChildren[location].textContent = 'X';
+        playerChildren[location].style.color = 'red';
+    };
+}
+
+console.log(gameboard1.board);
 })();
 
 /******/ })()
