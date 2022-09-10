@@ -886,20 +886,25 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Contai
                 }
             } else {
             // 2. Once all ships been placed, start checking for hits
-                if (beenHit === false) {
-                    beenHit = true;
-                    
-                    gameboard.receiveAttack(square.id);
-                    if (gameboard.board[square.id] === 'X') {
-                        square.textContent = 'O';
-                        square.style.color = 'green';
-                    } else {
-                        square.textContent = 'X';
-                        square.style.color = 'red';
-                    };
-                    // gameboard.receiveAttack(square);
-                } else {
+                if (!computer) {
+                    alert('You can\'t attack your own board!');
                     return;
+                } else {
+                    if (beenHit === false) {
+                        beenHit = true;
+                        
+                        gameboard.receiveAttack(square.id);
+                        if (gameboard.board[square.id] === 'X') {
+                            square.textContent = 'O';
+                            square.style.color = 'green';
+                        } else {
+                            square.textContent = 'X';
+                            square.style.color = 'red';
+                        };
+                        // gameboard.receiveAttack(square);
+                    } else {
+                        return;
+                    }
                 }
                 
                 // MAKE THIS WORK FOR ALL SHIPS AND BOTH BOARDS INDEPENDENTLY
@@ -1128,8 +1133,7 @@ __webpack_require__.r(__webpack_exports__);
 
 // Steps to complete before project completion:
 // 1. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
-// 2. ADD A TURN-BASED SYSTEM
-// 3. GIVE COMPUTER A BASIC AI
+// 2. GIVE COMPUTER A BASIC AI
 // 4. ANNOUNCE WINNER ONCE GAME IS OVER
 
 
