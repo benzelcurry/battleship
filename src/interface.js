@@ -175,20 +175,25 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                 }
             } else {
             // 2. Once all ships been placed, start checking for hits
-                if (beenHit === false) {
-                    beenHit = true;
-                    
-                    gameboard.receiveAttack(square.id);
-                    if (gameboard.board[square.id] === 'X') {
-                        square.textContent = 'O';
-                        square.style.color = 'green';
-                    } else {
-                        square.textContent = 'X';
-                        square.style.color = 'red';
-                    };
-                    // gameboard.receiveAttack(square);
-                } else {
+                if (!computer) {
+                    alert('You can\'t attack your own board!');
                     return;
+                } else {
+                    if (beenHit === false) {
+                        beenHit = true;
+                        
+                        gameboard.receiveAttack(square.id);
+                        if (gameboard.board[square.id] === 'X') {
+                            square.textContent = 'O';
+                            square.style.color = 'green';
+                        } else {
+                            square.textContent = 'X';
+                            square.style.color = 'red';
+                        };
+                        // gameboard.receiveAttack(square);
+                    } else {
+                        return;
+                    }
                 }
                 
                 // MAKE THIS WORK FOR ALL SHIPS AND BOTH BOARDS INDEPENDENTLY

@@ -2,8 +2,7 @@
 
 // Steps to complete before project completion:
 // 1. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
-// 2. ADD A TURN-BASED SYSTEM
-// 3. GIVE COMPUTER A BASIC AI
+// 2. GIVE COMPUTER A BASIC AI
 // 4. ANNOUNCE WINNER ONCE GAME IS OVER
 
 import './style.css';
