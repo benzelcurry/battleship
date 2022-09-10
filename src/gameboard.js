@@ -105,7 +105,9 @@ const Gameboard = () => {
     const receiveAttack = (index) => {
         if (board[index] === ' ') {
             board[index] = 'M'
-        // NEED TO GET isSunk() RUNNING
+            return 'miss';
+        } else if (board[index] === 'M') {
+            return 'already hit';
         } else {
             if (board[index].split('').includes('x')) {
                 attackHelper(xtraSmallArr, xtraSmallShip);
@@ -119,8 +121,9 @@ const Gameboard = () => {
                 attackHelper(hugeArr, hugeShip);
             };
 
-            board[index] = 'X'
-        };
+            board[index] = 'X';
+            return 'hit';
+        }
     };
 
     // Returns true if no ships are left on board; otherwise, false

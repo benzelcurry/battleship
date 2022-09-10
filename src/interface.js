@@ -2,10 +2,9 @@
 
 import placementHelper from './placementHelper';
 
+
 export default function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Container) {
     // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
-
-    // MAKE IT SO ONCE ALL USER SHIPS PLACED, CAN ATTACK ENEMY BOARD; GOOD SPOT TO IMPLEMENT TURNS
     let xtraPlaced = false;
     let smallPlaced = false;
     let medPlaced = false;
@@ -25,7 +24,6 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
         bigPlaced = true;
         hugePlaced = true;
     };
-
 
     const horizontal = document.querySelector('.horizontal');
     const vertical = document.querySelector('.vertical');
@@ -188,6 +186,7 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
                         square.textContent = 'X';
                         square.style.color = 'red';
                     };
+                    // gameboard.receiveAttack(square);
                 } else {
                     return;
                 }

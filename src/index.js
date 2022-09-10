@@ -21,3 +21,32 @@ let computer;
 
 drawBoard(gameboard1, board1, player1Status, computer = false, player2Container);
 drawBoard(gameboard2, board2, player2Status, computer = true);
+
+const getRandomNum = (max) => {
+    return Math.floor(Math.random() * max);
+}
+
+const playerChildren = board1.children;
+
+board2.addEventListener('click', () => {
+    setTimeout(attackPlayer, 1000);
+});
+
+// Should go into its own module
+const attackPlayer = () => {
+    let location = getRandomNum(99);
+    console.log(gameboard1.board);
+    if (playerChildren[location].textContent === 'O' || playerChildren[location].textContent === 'X') {
+        attackPlayer();
+    } else if (gameboard1.receiveAttack(location) === 'hit') {
+        gameboard1.receiveAttack(location)
+        playerChildren[location].textContent = 'O';
+        playerChildren[location].style.color = 'green';
+    } else {
+        gameboard1.receiveAttack(location)
+        playerChildren[location].textContent = 'X';
+        playerChildren[location].style.color = 'red';
+    };
+}
+
+console.log(gameboard1.board);
