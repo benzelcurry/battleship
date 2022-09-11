@@ -34,14 +34,8 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
         };
     };
    
-    // Use random number generator from index.js & implement similar logic to attackPlayer() to
-    // determine if there's already a ship in the spot it's trying to be randomly placed
+    // Randomly places computer ships
     if (computer === true) {
-        // gameboard.placeShip(getRandomNum(99), gameboard.xtraSmallShip, 2, false);
-        // gameboard.placeShip(getRandomNum(99), gameboard.smallShip, 3, false);
-        // gameboard.placeShip(getRandomNum(99), gameboard.medShip, 4, false);
-        // gameboard.placeShip(getRandomNum(99), gameboard.bigShip, 5, false);
-        // gameboard.placeShip(getRandomNum(99), gameboard.hugeShip, 6, false);
         placeCom(gameboard.xtraSmallShip, 2);
         placeCom(gameboard.smallShip, 3);
         placeCom(gameboard.medShip, 4);
