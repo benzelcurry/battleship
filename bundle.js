@@ -834,7 +834,6 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Contai
         // Places ships, then executes attack on grid square clicked
         square.addEventListener('click', () => {
             let siblings;
-            console.log({xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced});
 
             const markSquares = (sqSize) => {
                 if (isVertical === false) {
@@ -960,8 +959,6 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Contai
         });
     };
 };
-
-// module.exports = drawBoard;
 
 /***/ }),
 /* 14 */
@@ -1159,8 +1156,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 // Main module where everything comes together
 
-// Steps to complete before project completion:
-// 1. GIVE COMPUTER A BASIC AI
+// Notes:
+// 1. Modules are tightly coupled; this isn't good practice and should be fixed if this
+// ends up becoming a portfolio piece.
+// 2. Code could be cleaned up by creating additional modules and reducing the overall
+// size of each one.
+// 3. Variable naming is not consistent among modules; this should be improved upon in
+// future projects.
 
 
 
@@ -1224,11 +1226,17 @@ const attackPlayer = () => {
         playerChildren[location].textContent = 'X';
         playerChildren[location].style.color = 'red';
     };
+    sunkHelper();
 }
 
 const attackHelper = (newLocation) => {
-    if (playerChildren[newLocation].textContent === 'O' || playerChildren[newLocation].textContent === 'X' || playerChildren[newLocation] === undefined) {
-        missCap += 0.5;
+    if (playerChildren[newLocation] === undefined) {
+        attackPlayer();
+    } else if (playerChildren[newLocation].textContent === 'O' || playerChildren[newLocation].textContent === 'X') {
+        missCap += 0.25;
+        if (missCap > 3) {
+            didHit = false;
+        }
         attackPlayer();
     } else if (gameboard1.receiveAttack(newLocation) === 'hit') {
         missCap = 0;
@@ -1242,9 +1250,52 @@ const attackHelper = (newLocation) => {
         gameboard1.receiveAttack(newLocation)
         playerChildren[newLocation].textContent = 'X';
         playerChildren[newLocation].style.color = 'red';
-        if (missCap >= 3) {
+        if (missCap > 3) {
             didHit = false;
         };
+    };
+}
+
+const xtraSmallSunk = document.createElement('div');
+xtraSmallSunk.classList.add('sunk');
+xtraSmallSunk.textContent = 'Extra small ship sunk';
+
+const smallSunk = document.createElement('div');
+smallSunk.classList.add('sunk');
+smallSunk.textContent = 'Small ship sunk';
+
+const medSunk = document.createElement('div');
+medSunk.classList.add('sunk');
+medSunk.textContent = 'Medium ship sunk';
+
+const bigSunk = document.createElement('div');
+bigSunk.classList.add('sunk');
+bigSunk.textContent = 'Big Ship sunk';
+
+const hugeSunk = document.createElement('div');
+hugeSunk.classList.add('sunk');
+hugeSunk.textContent = 'Huge ship sunk';
+
+const sunkHelper = () => {
+    // Appends which ships have been sunken to the scoreboard
+    if (!gameboard1.xtraSmallShip.index.includes('O')) {
+        player1Status.appendChild(xtraSmallSunk);
+    };
+    
+    if (!gameboard1.smallShip.index.includes('O')) {
+        player1Status.appendChild(smallSunk);
+    };
+
+    if (!gameboard1.medShip.index.includes('O')) {
+        player1Status.appendChild(medSunk);
+    };
+
+    if (!gameboard1.bigShip.index.includes('O')) {
+        player1Status.appendChild(bigSunk);
+    };
+
+    if (!gameboard1.hugeShip.index.includes('O')) {
+        player1Status.appendChild(hugeSunk);
     };
 }
 })();
