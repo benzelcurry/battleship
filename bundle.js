@@ -745,14 +745,8 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Contai
         };
     };
    
-    // Use random number generator from index.js & implement similar logic to attackPlayer() to
-    // determine if there's already a ship in the spot it's trying to be randomly placed
+    // Randomly places computer ships
     if (computer === true) {
-        // gameboard.placeShip(getRandomNum(99), gameboard.xtraSmallShip, 2, false);
-        // gameboard.placeShip(getRandomNum(99), gameboard.smallShip, 3, false);
-        // gameboard.placeShip(getRandomNum(99), gameboard.medShip, 4, false);
-        // gameboard.placeShip(getRandomNum(99), gameboard.bigShip, 5, false);
-        // gameboard.placeShip(getRandomNum(99), gameboard.hugeShip, 6, false);
         placeCom(gameboard.xtraSmallShip, 2);
         placeCom(gameboard.smallShip, 3);
         placeCom(gameboard.medShip, 4);
@@ -1166,8 +1160,7 @@ __webpack_require__.r(__webpack_exports__);
 // Main module where everything comes together
 
 // Steps to complete before project completion:
-// 1. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
-// 2. GIVE COMPUTER A BASIC AI
+// 1. GIVE COMPUTER A BASIC AI
 
 
 
@@ -1191,16 +1184,38 @@ const getRandomNum = (max) => {
 
 const playerChildren = board1.children;
 
-board2.addEventListener('click', () => {
-    setTimeout(attackPlayer, 1000);
+board2.addEventListener('click', (e) => {
+    if (e.target.classList.contains('been-hit')) {
+        return;
+    } else {
+        setTimeout(attackPlayer, 1000);
+        setTimeout(e.target.classList.add('been-hit'), 1500);
+    };
 });
+
+let missCap = 0;
+let lastHit;
+let didHit = false;
 
 // Should go into its own module
 const attackPlayer = () => {
     let location = getRandomNum(100);
+    let chooseHit = getRandomNum(5);
     if (playerChildren[location].textContent === 'O' || playerChildren[location].textContent === 'X') {
         attackPlayer();
+    } else if (didHit === true) {
+        if (chooseHit === 1) {
+            attackHelper(lastHit - 1);
+        } else if (chooseHit === 2) {
+            attackHelper(lastHit + 1);
+        } else if (chooseHit === 3) {
+            attackHelper(lastHit - 10);
+        } else {
+            attackHelper(lastHit + 10);
+        }
     } else if (gameboard1.receiveAttack(location) === 'hit') {
+        lastHit = location;
+        didHit = true;
         gameboard1.receiveAttack(location)
         playerChildren[location].textContent = 'O';
         playerChildren[location].style.color = 'green';
@@ -1208,6 +1223,28 @@ const attackPlayer = () => {
         gameboard1.receiveAttack(location)
         playerChildren[location].textContent = 'X';
         playerChildren[location].style.color = 'red';
+    };
+}
+
+const attackHelper = (newLocation) => {
+    if (playerChildren[newLocation].textContent === 'O' || playerChildren[newLocation].textContent === 'X' || playerChildren[newLocation] === undefined) {
+        missCap += 0.5;
+        attackPlayer();
+    } else if (gameboard1.receiveAttack(newLocation) === 'hit') {
+        missCap = 0;
+        lastHit = newLocation;
+        didHit = true;
+        gameboard1.receiveAttack(newLocation)
+        playerChildren[newLocation].textContent = 'O';
+        playerChildren[newLocation].style.color = 'green';
+    } else {
+        missCap++;
+        gameboard1.receiveAttack(newLocation)
+        playerChildren[newLocation].textContent = 'X';
+        playerChildren[newLocation].style.color = 'red';
+        if (missCap >= 3) {
+            didHit = false;
+        };
     };
 }
 })();
