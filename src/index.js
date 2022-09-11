@@ -3,7 +3,6 @@
 // Steps to complete before project completion:
 // 1. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
 // 2. GIVE COMPUTER A BASIC AI
-// 4. ANNOUNCE WINNER ONCE GAME IS OVER
 
 import './style.css';
 import Gameboard from './gameboard.js';
@@ -33,8 +32,7 @@ board2.addEventListener('click', () => {
 
 // Should go into its own module
 const attackPlayer = () => {
-    let location = getRandomNum(99);
-    console.log(gameboard1.board);
+    let location = getRandomNum(100);
     if (playerChildren[location].textContent === 'O' || playerChildren[location].textContent === 'X') {
         attackPlayer();
     } else if (gameboard1.receiveAttack(location) === 'hit') {
@@ -47,5 +45,3 @@ const attackPlayer = () => {
         playerChildren[location].style.color = 'red';
     };
 }
-
-console.log(gameboard1.board);

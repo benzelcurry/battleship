@@ -579,11 +579,11 @@ const Gameboard = () => {
         // Marks where ships are located on the board
         if (!isVertical) {
             for (let i = 0; i < ship.size; i++) {
-                board[index + i] = ship.index[i] + letter;
+                board[index + i] = 'O' + letter;
             };
         } else {
             for (let i = 0; i < (ship.size * 10); i += 10) {
-                board[index - i] = ship.index[i] + letter;
+                board[index - i] = 'O' + letter;
             };
         };
         
@@ -715,20 +715,49 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Container) {
-    // MAKE IT SO USER CAN PLACE SHIPS; COMPUTER SHIPS RANDOMIZED
     let xtraPlaced = false;
     let smallPlaced = false;
     let medPlaced = false;
     let bigPlaced = false;
     let hugePlaced = false;
 
+    let isGameOver = false;
+
+    const getRandomNum = (max) => {
+        return Math.floor(Math.random() * max);
+    }
+
+    const placeCom = (comShip, comSibs) => {
+        let random = getRandomNum(100);
+        let vert;
+        let randomVert = getRandomNum(2);
+
+        if (randomVert === 1) {
+            vert = true;
+        } else {
+            vert = false;
+        }
+
+        if (gameboard.placeShip(random, comShip, comSibs, vert) === 'Error') {
+            placeCom(comShip, comSibs);
+        } else {
+            gameboard.placeShip(random, comShip, comSibs, vert);
+        };
+    };
    
+    // Use random number generator from index.js & implement similar logic to attackPlayer() to
+    // determine if there's already a ship in the spot it's trying to be randomly placed
     if (computer === true) {
-        gameboard.placeShip(3, gameboard.xtraSmallShip, 2, false);
-        gameboard.placeShip(13, gameboard.smallShip, 3, false);
-        gameboard.placeShip(23, gameboard.medShip, 4, false);
-        gameboard.placeShip(33, gameboard.bigShip, 5, false);
-        gameboard.placeShip(41, gameboard.hugeShip, 6, false);
+        // gameboard.placeShip(getRandomNum(99), gameboard.xtraSmallShip, 2, false);
+        // gameboard.placeShip(getRandomNum(99), gameboard.smallShip, 3, false);
+        // gameboard.placeShip(getRandomNum(99), gameboard.medShip, 4, false);
+        // gameboard.placeShip(getRandomNum(99), gameboard.bigShip, 5, false);
+        // gameboard.placeShip(getRandomNum(99), gameboard.hugeShip, 6, false);
+        placeCom(gameboard.xtraSmallShip, 2);
+        placeCom(gameboard.smallShip, 3);
+        placeCom(gameboard.medShip, 4);
+        placeCom(gameboard.bigShip, 5);
+        placeCom(gameboard.hugeShip, 6);
         xtraPlaced = true;
         smallPlaced = true;
         medPlaced = true;
@@ -889,6 +918,9 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Contai
                 if (!computer) {
                     alert('You can\'t attack your own board!');
                     return;
+                } else if (isGameOver) {
+                    alert('Refresh the page to play again');
+                    return;
                 } else {
                     if (beenHit === false) {
                         beenHit = true;
@@ -897,17 +929,19 @@ function drawBoard(gameboard, playerBoard, playerStatus, computer, player2Contai
                         if (gameboard.board[square.id] === 'X') {
                             square.textContent = 'O';
                             square.style.color = 'green';
+                            if (gameboard.gameover()) {
+                                alert('Player 1 Wins!');
+                                isGameOver = true;
+                            }
                         } else {
                             square.textContent = 'X';
                             square.style.color = 'red';
                         };
-                        // gameboard.receiveAttack(square);
                     } else {
                         return;
                     }
                 }
                 
-                // MAKE THIS WORK FOR ALL SHIPS AND BOTH BOARDS INDEPENDENTLY
                 // Appends which ships have been sunken to the scoreboard
                 if (!gameboard.xtraSmallShip.index.includes('O')) {
                     playerStatus.appendChild(xtraSmallSunk);
@@ -1134,7 +1168,6 @@ __webpack_require__.r(__webpack_exports__);
 // Steps to complete before project completion:
 // 1. MAKE SHIPS PLACE RANDOMLY ON COMPUTER'S BOARD
 // 2. GIVE COMPUTER A BASIC AI
-// 4. ANNOUNCE WINNER ONCE GAME IS OVER
 
 
 
@@ -1164,8 +1197,7 @@ board2.addEventListener('click', () => {
 
 // Should go into its own module
 const attackPlayer = () => {
-    let location = getRandomNum(99);
-    console.log(gameboard1.board);
+    let location = getRandomNum(100);
     if (playerChildren[location].textContent === 'O' || playerChildren[location].textContent === 'X') {
         attackPlayer();
     } else if (gameboard1.receiveAttack(location) === 'hit') {
@@ -1178,8 +1210,6 @@ const attackPlayer = () => {
         playerChildren[location].style.color = 'red';
     };
 }
-
-console.log(gameboard1.board);
 })();
 
 /******/ })()

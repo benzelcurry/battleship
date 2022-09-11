@@ -92,11 +92,11 @@ const Gameboard = () => {
         // Marks where ships are located on the board
         if (!isVertical) {
             for (let i = 0; i < ship.size; i++) {
-                board[index + i] = ship.index[i] + letter;
+                board[index + i] = 'O' + letter;
             };
         } else {
             for (let i = 0; i < (ship.size * 10); i += 10) {
-                board[index - i] = ship.index[i] + letter;
+                board[index - i] = 'O' + letter;
             };
         };
         
