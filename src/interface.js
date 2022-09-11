@@ -123,7 +123,6 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
         // Places ships, then executes attack on grid square clicked
         square.addEventListener('click', () => {
             let siblings;
-            console.log({xtraPlaced, smallPlaced, medPlaced, bigPlaced, hugePlaced});
 
             const markSquares = (sqSize) => {
                 if (isVertical === false) {
@@ -249,5 +248,3 @@ export default function drawBoard(gameboard, playerBoard, playerStatus, computer
         });
     };
 };
-
-// module.exports = drawBoard;
